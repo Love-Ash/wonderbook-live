@@ -95,9 +95,69 @@ DEFAULT_PORT = int(os.environ.get("PORT", "8080"))
 # ---------------------------------------------------------------------------
 # Preset Book Scenarios — Pure Korean ("ko", Default) & Pure English ("en")
 # ---------------------------------------------------------------------------
-DEFAULT_PRESET_ID = "science_hcl_lab"
+DEFAULT_PRESET_ID = "fairy_tiger_rabbit"
 
 BOOK_PRESETS: dict[str, dict[str, Any]] = {
+    "fairy_tiger_rabbit": {
+        "preset_id": "fairy_tiger_rabbit",
+        "mode": "storybook",
+        "lang": "ko",
+        "title": "달빛 솔숲 고개에서 만난 호랑이와 토끼!",
+        "subtitle": "떡 하나 주면 안 잡아먹지! 내가 말하는 대로 다음 장이 펼쳐지는 전래 동화책",
+        "character_name": "꾀돌이 산토끼 달콩이",
+        "character_persona_voice": "baby_fox",
+        "character_bible": (
+            "Warm Korean traditional fairy-tale and Studio Ghibli watercolor painting style. "
+            "On a moonlit pine forest mountain path with glowing warm lanterns and autumn persimmon trees, "
+            "a big friendly cute striped Korean mountain tiger with expressive golden eyes sits across from "
+            "a clever adorable white rabbit holding a woven basket."
+        ),
+        "initial_visual_state": {
+            "theme": "fairy_tiger_rabbit",
+            "lang": "ko",
+            "character_persona_voice": "baby_fox",
+            "sky_color": [24, 34, 68],
+            "item_key": "tiger_rabbit_path",
+            "item_label": "달빛 소나무 고갯길과 떡바구니",
+            "accumulated_items": ["tiger_rabbit_path"],
+            "accumulated_labels": ["달빛 소나무 고갯길"],
+            "sparkle_intensity": 0.72,
+            "companion": "mountain_tiger",
+            "accent_color": [251, 191, 36],
+        },
+        "opening_page": {
+            "page_number": 1,
+            "user_question": "호랑이랑 토끼가 나오는 동화책 시작해줘",
+            "page_title": "1장 — 달빛 솔숲 고개에서 만난 호랑이와 토끼!",
+            "story_paragraphs": [
+                "둥근 보름달이 소나무 숲 고갯길을 환하게 비추던 밤이었어요. 하얀 귀를 쫑긋 세운 꾀돌이 산토끼 달콩이가 향긋한 바구니를 들고 고개를 넘어가는데, 바위 뒤에서 커다란 줄무늬 산호랑이가 '어흥!' 하고 나타나 길을 막아섰답니다.",
+                "배가 고픈 호랑이는 금빛 눈을 반짝이며 입맛을 다셨지만, 영리한 달콩이는 조금도 무서워하지 않고 바구니를 살짝 열었어요. 과연 달콩이는 호랑이에게 달콤한 달빛 꿀떡을 건넬까요, 아니면 모닥불 속의 따끈따끈한 조약돌 떡을 건넬까요? 여러분이 상상하는 이야기를 들려주세요!",
+            ],
+            "character_name": "꾀돌이 산토끼 달콩이",
+            "character_persona_voice": "baby_fox",
+            "character_dialogue": (
+                "깡총깡총! 헤헤, 호랑이 아저씨가 '떡 하나 주면 안 잡아먹지!' 하고 길을 막았어! "
+                "내 바구니 속의 달빛 꿀떡을 줄까, 아니면 모닥불에 구운 따끈한 조약돌을 맛있는 떡이라고 속여서 줄까? 네가 다음 이야기를 정해줘, 깡총~!"
+            ),
+            "science_or_moral_note": (
+                "전래 동화 지혜 노트: 위급한 순간에도 당황하지 않고 재치와 지혜를 발휘하면 커다란 호랑이와도 유쾌한 친구가 될 수 있어요."
+            ),
+            "visual_continuity_note": "1장 기준 장면: 달빛 소나무 고갯길에서 마주 앉은 줄무늬 산호랑이와 꾀돌이 산토끼 달콩이.",
+            "nano_banana_prompt": (
+                "Masterpiece 16:9 widescreen children's storybook illustration, warm Korean traditional fairy-tale and Studio Ghibli watercolor painting style. "
+                "On a moonlit pine forest mountain path with glowing warm lanterns, a big friendly cute striped Korean mountain tiger sits across from a clever white rabbit holding a woven basket."
+            ),
+            "veo_motion_prompt": (
+                "The clever white rabbit twitching its ears happily while the friendly striped Korean tiger tilts its head curiously under moonlight and fireflies."
+            ),
+            "suggested_followups": [
+                "토끼가 호랑이에게 반짝이는 달빛 꿀떡을 주면 어떻게 돼요?",
+                "토끼가 모닥불에서 구운 뜨거운 조약돌을 떡이라고 주면 어때요?",
+                "달이 사라지면 어떻게 되어요?",
+                "하늘에서 달콤한 별사탕 비가 쏟아지면 호랑이가 어떻게 해요?",
+            ],
+        },
+    },
     "science_hcl_lab": {
         "preset_id": "science_hcl_lab",
         "mode": "science_lab",
@@ -134,7 +194,7 @@ BOOK_PRESETS: dict[str, dict[str, Any]] = {
             "page_title": "1장 — 에메랄드빛으로 속삭이는 염산 비커",
             "story_paragraphs": [
                 "반짝이는 과학 실험대 한가운데에 연한 에메랄드빛으로 은은하게 빛나는 오백 밀리리터 유리 비커가 놓여 있어요. 비커 안에는 우리 위장 속 소화액에도 들어 있는 강한 산성 용액인 염산이 담겨 있고, 옆에 나란히 놓인 디지털 측정기는 산성도 일 점 영과 섭씨 이십이 도를 가리키며 조용히 깜빡이고 있답니다.",
-                "청록색 안전 고글을 쓴 태엽 부엉이 과학자 노바 박사님이 날개를 활짝 펴며 여러분을 반갑게 맞이해요. 이 신기한 비커 속에는 여러분이 궁금해하는 어떤 재료든 안전하게 계속 넣어볼 수 있고, 먼저 넣은 재료들은 사라지지 않고 다음 장에서도 그대로 남아 새로운 재료와 함께 반응한답니다!",
+                "청록색 안전 고글을 쓴 태엽 부엉이 과학자 노바 박사님이 날개를 활짝 펴며 여러분을 반갑게 맞이해요. 이 신기한 비커 속에는 여러분이 궁금해하는 어떤 재료든 안전하게 하나씩 넣어보며 투입부터 잠김, 거품 폭발까지 생생한 3단계 화학 반응을 관찰할 수 있답니다!",
             ],
             "character_name": "부엉이 과학자 노바 박사",
             "character_persona_voice": "owl_professor",
@@ -219,7 +279,7 @@ BOOK_PRESETS: dict[str, dict[str, Any]] = {
             "suggested_followups": [
                 "문이 열리고 아기 용이 비눗방울을 뿜으면 어때요?",
                 "루미가 무지개 구름 비행선을 타면 어떻게 돼요?",
-                "열쇠구멍에 달콤한 초코칩 과자를 넣으면 어떻게 돼요?",
+                "달이 사라지면 어떻게 되어요?",
                 "하늘에서 별사탕 비가 내리면 어떻게 돼요?",
             ],
         },
@@ -283,66 +343,6 @@ BOOK_PRESETS: dict[str, dict[str, Any]] = {
                 "무중력에서 양초에 불을 붙이면 불꽃 모양이 어때요?",
                 "우주에서 사과와 과자를 동시에 띄우면 어떻게 되나요?",
                 "우주에서 발포 비타민이나 소다를 물방울에 넣으면 어떻게 되나요?",
-            ],
-        },
-    },
-    "fairy_tiger_rabbit": {
-        "preset_id": "fairy_tiger_rabbit",
-        "mode": "storybook",
-        "lang": "ko",
-        "title": "호랑이와 꾀돌이 토끼의 달빛 산길 동화",
-        "subtitle": "떡 하나 주면 안 잡아먹지! 내가 말하는 대로 다음 장이 펼쳐지는 전래 동화책",
-        "character_name": "꾀돌이 산토끼 달콩이",
-        "character_persona_voice": "baby_fox",
-        "character_bible": (
-            "Warm Korean traditional fairy-tale and Studio Ghibli watercolor painting style. "
-            "On a moonlit pine forest mountain path with glowing warm lanterns and autumn persimmon trees, "
-            "a big friendly cute striped Korean mountain tiger with expressive golden eyes sits across from "
-            "a clever adorable white rabbit holding a woven basket."
-        ),
-        "initial_visual_state": {
-            "theme": "fairy_tiger_rabbit",
-            "lang": "ko",
-            "character_persona_voice": "baby_fox",
-            "sky_color": [24, 34, 68],
-            "item_key": "tiger_rabbit_path",
-            "item_label": "달빛 소나무 고갯길과 떡바구니",
-            "accumulated_items": ["tiger_rabbit_path"],
-            "accumulated_labels": ["달빛 소나무 고갯길"],
-            "sparkle_intensity": 0.72,
-            "companion": "mountain_tiger",
-            "accent_color": [251, 191, 36],
-        },
-        "opening_page": {
-            "page_number": 1,
-            "user_question": "호랑이랑 토끼가 나오는 동화책 시작해줘",
-            "page_title": "1장 — 달빛 고갯길에서 만난 얼룩 호랑이와 꾀돌이 토끼",
-            "story_paragraphs": [
-                "둥근 보름달이 소나무 숲 고갯길을 환하게 비추던 밤이었어요. 하얀 귀를 쫑긋 세운 꾀돌이 산토끼 달콩이가 향긋한 바구니를 들고 고개를 넘어가는데, 바위 뒤에서 커다란 줄무늬 산호랑이가 '어흥!' 하고 나타나 길을 막아섰답니다.",
-                "배가 고픈 호랑이는 금빛 눈을 반짝이며 입맛을 다셨지만, 영리한 달콩이는 조금도 무서워하지 않고 바구니를 살짝 열었어요. 과연 달콩이는 호랑이에게 달콤한 달빛 꿀떡을 건넬까요, 아니면 모닥불 속의 따끈따끈한 조약돌 떡을 건넬까요? 여러분이 상상하는 이야기를 들려주세요!",
-            ],
-            "character_name": "꾀돌이 산토끼 달콩이",
-            "character_persona_voice": "baby_fox",
-            "character_dialogue": (
-                "깡총깡총! 헤헤, 호랑이 아저씨가 '떡 하나 주면 안 잡아먹지!' 하고 길을 막았어! "
-                "내 바구니 속의 달빛 꿀떡을 줄까, 아니면 모닥불에 구운 따끈한 조약돌을 맛있는 떡이라고 속여서 줄까? 네가 다음 이야기를 정해줘, 깡총~!"
-            ),
-            "science_or_moral_note": (
-                "전래 동화 지혜 노트: 위급한 순간에도 당황하지 않고 재치와 지혜를 발휘하면 커다란 호랑이와도 유쾌한 친구가 될 수 있어요."
-            ),
-            "visual_continuity_note": "1장 기준 장면: 달빛 소나무 고갯길에서 마주 앉은 줄무늬 산호랑이와 꾀돌이 산토끼 달콩이.",
-            "nano_banana_prompt": (
-                "Masterpiece 16:9 widescreen children's storybook illustration, warm Korean traditional fairy-tale and Studio Ghibli watercolor painting style. "
-                "On a moonlit pine forest mountain path with glowing warm lanterns, a big friendly cute striped Korean mountain tiger sits across from a clever white rabbit holding a woven basket."
-            ),
-            "veo_motion_prompt": (
-                "The clever white rabbit twitching its ears happily while the friendly striped Korean tiger tilts its head curiously under moonlight and fireflies."
-            ),
-            "suggested_followups": [
-                "토끼가 호랑이에게 반짝이는 달빛 꿀떡을 주면 어떻게 돼요?",
-                "토끼가 모닥불에서 구운 뜨거운 조약돌을 떡이라고 주면 어때요?",
-                "호랑이랑 토끼가 무지개 구름을 타고 달나라로 날아가면 어때요?",
-                "하늘에서 달콤한 별사탕 비가 쏟아지면 호랑이가 어떻게 해요?",
             ],
         },
     },

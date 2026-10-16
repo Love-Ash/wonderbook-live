@@ -564,22 +564,32 @@ def _select_nano_banana_plate(
             candidates.append("fox_base.png")
 
     elif is_space_shuttle:
-        if active_key == "water_spray":
+        item_label_low = str(visual_state.get("item_label") or "").lower()
+        if active_key in seed_keys and not accumulated_items:
+            candidates.extend(["space_shuttle_base.png", "space_base.png"])
+        elif active_key == "water_spray" or any(k in item_label_low for k in ("물", "눈물", "울면", "콜라", "탄산", "진공", "창문", "water", "tear", "soda", "vacuum", "window")):
             candidates.extend(["space_shuttle_water.png", "space_shuttle_base.png", "space_base.png"])
         elif active_key in ("cookie_snack", "baking_soda"):
             candidates.extend(["space_shuttle_cookie.png", "space_shuttle_base.png", "space_base.png"])
-        elif active_key == "zero_g_candle":
-            candidates.extend(["space_zero_g_candle.png", "space_shuttle_base.png", "space_base.png"])
+        elif active_key == "zero_g_candle" or any(k in item_label_low for k in ("다이너마이트", "폭발", "터트리", "터지", "화약", "불", "dynamite", "explode", "blast")):
+            candidates.extend(["space_zero_g_candle.png", "space_shuttle_cookie.png", "space_shuttle_base.png"])
+        elif active_key == "custom_science":
+            candidates.extend(["space_shuttle_cookie.png", "space_shuttle_water.png", "space_zero_g_candle.png", "space_shuttle_base.png"])
         else:
             candidates.extend(["space_shuttle_base.png", "space_shuttle_water.png", "space_base.png"])
 
     elif is_space:
-        if active_key == "water_spray":
+        item_label_low = str(visual_state.get("item_label") or "").lower()
+        if active_key in seed_keys and not accumulated_items:
+            candidates.extend(["space_base.png", "space_zero_g_candle.png"])
+        elif active_key == "water_spray" or any(k in item_label_low for k in ("물", "눈물", "울면", "콜라", "탄산", "진공", "창문", "water", "tear", "soda", "vacuum", "window")):
             candidates.extend(["space_shuttle_water.png", "space_base.png"])
         elif active_key in ("cookie_snack", "baking_soda"):
             candidates.extend(["space_shuttle_cookie.png", "space_base.png"])
-        elif active_key == "zero_g_candle":
+        elif active_key == "zero_g_candle" or any(k in item_label_low for k in ("다이너마이트", "폭발", "터트리", "터지", "화약", "불", "dynamite", "explode", "blast")):
             candidates.extend(["space_zero_g_candle.png", "space_base.png"])
+        elif active_key == "custom_science":
+            candidates.extend(["space_zero_g_candle.png", "space_shuttle_water.png", "space_shuttle_cookie.png", "space_base.png"])
         else:
             candidates.extend(["space_base.png", "space_zero_g_candle.png"])
 

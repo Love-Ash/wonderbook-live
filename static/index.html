@@ -1668,8 +1668,8 @@
         <div class="control-group" data-stitch-component="preset-selector">
           <span class="control-label" id="lblScenario">시나리오 북</span>
           <select id="presetSelect" class="stitch-select" onchange="createNewBook(this.value)">
+            <option value="fairy_tiger_rabbit" id="optPresetTiger" selected>🐯 달빛 솔숲 고개에서 만난 호랑이와 토끼!</option>
             <option value="science_hcl_lab" id="optPresetHcl">🧪 노바 박사의 염산 실험실</option>
-            <option value="fairy_tiger_rabbit" id="optPresetTiger">🐯 호랑이와 토끼의 달빛 고개 동화</option>
             <option value="science_space_shuttle" id="optPresetShuttle">🚀 우주왕복선 안 무중력 실험책</option>
             <option value="fairy_starlight_fox" id="optPresetFox">🦊 아기 여우 루미의 별빛 숲 동화</option>
             <option value="science_space_kitchen" id="optPresetSpace">🛰️ 오르빗 대장의 무중력 우주 실험실</option>
@@ -1703,7 +1703,7 @@
             🎨 <span id="pillImageModel">나노 바나나 16:9</span>
           </span>
           <span class="pipeline-pill">
-            🎬 <span id="pillMotionModel">Veo 3단계 과정 모션</span>
+            🎬 <span id="pillMotionModel">동화 리빙 모션</span>
           </span>
           <span class="pipeline-pill">
             ⏱️ <span id="pillTurnLatency">-- ms</span>
@@ -1756,8 +1756,22 @@
     <nav id="scenarioBookShelf" class="scenario-bookshelf" aria-label="시나리오 북 선택">
       <button
         type="button"
-        id="bookTab_science_hcl_lab"
+        id="bookTab_fairy_tiger_rabbit"
         class="scenario-book-card active"
+        onclick="createNewBook('fairy_tiger_rabbit')"
+      >
+        <div class="scenario-book-icon">🐯</div>
+        <div class="scenario-book-texts">
+          <div class="scenario-book-title" id="cardTitleTiger">🐯 달빛 솔숲 고개에서 만난 호랑이와 토끼!</div>
+          <div class="scenario-book-desc" id="cardDescTiger">떡 하나 주면 안 잡아먹지! 꾀 많은 토끼와 어흥 호랑이의 달빛 솔숲 모험</div>
+        </div>
+        <span class="scenario-active-pill" id="cardBadgeTiger">현재 열람 중</span>
+      </button>
+
+      <button
+        type="button"
+        id="bookTab_science_hcl_lab"
+        class="scenario-book-card"
         onclick="createNewBook('science_hcl_lab')"
       >
         <div class="scenario-book-icon">🧪</div>
@@ -1765,21 +1779,7 @@
           <div class="scenario-book-title" id="cardTitleHcl">🧪 노바 박사의 염산 실험실</div>
           <div class="scenario-book-desc" id="cardDescHcl">과자·열쇠·베이킹소다 투입 ➔ 거품 폭발 3단계 과정 실험북</div>
         </div>
-        <span class="scenario-active-pill" id="cardBadgeHcl">현재 열람 중</span>
-      </button>
-
-      <button
-        type="button"
-        id="bookTab_fairy_tiger_rabbit"
-        class="scenario-book-card"
-        onclick="createNewBook('fairy_tiger_rabbit')"
-      >
-        <div class="scenario-book-icon">🐯</div>
-        <div class="scenario-book-texts">
-          <div class="scenario-book-title" id="cardTitleTiger">🐯 호랑이와 토끼의 달빛 고개</div>
-          <div class="scenario-book-desc" id="cardDescTiger">호랑이와 토끼가 꿀떡·조약돌로 펼치는 전래 마법 동화책</div>
-        </div>
-        <span class="scenario-active-pill" id="cardBadgeTiger">책 펼치기</span>
+        <span class="scenario-active-pill" id="cardBadgeHcl">책 펼치기</span>
       </button>
 
       <button
@@ -2093,7 +2093,7 @@
     let currentPageIndex = 0;
     let currentMediaView = 'image'; // Default to 16:9 Nano Banana HD Illustration
     let currentLang = 'ko';         // Strictly separated 'ko' (100% Korean) or 'en' (100% English)
-    let currentPresetId = 'science_hcl_lab';
+    let currentPresetId = 'fairy_tiger_rabbit';
     let activeRequestToken = 0;
     let recognition = null;
     let isListening = false;
@@ -2103,6 +2103,36 @@
        SCENARIO METADATA & STRICT KOREAN / ENGLISH I18N DICTIONARY
        ========================================================================== */
     const SCENARIO_PROFILES = {
+      fairy_tiger_rabbit: {
+        emblem: '🐯',
+        theme: 'storybook',
+        ko: {
+          title: '🐯 달빛 솔숲 고개에서 만난 호랑이와 토끼!',
+          desc: '떡 하나 주면 안 잡아먹지! 꾀 많은 토끼와 어흥 호랑이의 달빛 솔숲 모험',
+          modeBadge: '🐯 달빛 솔숲 고개에서 만난 호랑이와 토끼!',
+          charAvatar: '🐰',
+          charName: '꾀돌이 토끼 토토 & 어흥 호랑이',
+          personaBadge: '🐰 토끼 토토 & 🐯 호랑이 캐릭터 보이스',
+          emptyState: '🌕 달빛 솔숲 고개와 꿀떡 바구니 (1페이지 첫 장면)',
+          accumulatedLabel: '🧺 달빛 고개 동화 누적 줄거리 체인:',
+          noteHeader: '✨ 전래동화 지혜 · 호랑이와 토끼의 누적 이야기 해설',
+          curiosityHeader: '💡 호랑이와 토끼 원클릭 동화 전개 칩 (클릭하면 각 장마다 새로운 동화 일러스트와 함께 이야기가 이어집니다):',
+          placeholder: "호랑이와 토끼에게 어떤 일이 벌어질까요? 예: '달이 사라지면 어떻게 되어요?', '호랑이에게 꿀떡을 주면?'..."
+        },
+        en: {
+          title: '🐯 The Tiger & Clever Rabbit at Moonlit Pine Pass!',
+          desc: 'Korean folk tale adventure with Toto the Clever Rabbit and the Mountain Tiger',
+          modeBadge: '🐯 TIGER & RABBIT FOLK STORYBOOK',
+          charAvatar: '🐰',
+          charName: 'Clever Rabbit Toto & Tiger',
+          personaBadge: '🐰 Clever Rabbit Toto Character Voice',
+          emptyState: '🌕 Moonlit Pine Mountain Pass (Page 1 Scene)',
+          accumulatedLabel: '🧺 Folk Tale Story Continuity Chain:',
+          noteHeader: '✨ Folk Tale Wisdom & Story Continuity Note',
+          curiosityHeader: '💡 1-Click Tiger & Rabbit Story Chips (Generates a new chapter illustration and continues the folk tale):',
+          placeholder: "What happens next with the Tiger and Rabbit? e.g., 'What happens if the moon disappears?', 'What if the rabbit gives honey rice cakes?'..."
+        }
+      },
       science_hcl_lab: {
         emblem: '🧪',
         theme: 'science_lab',
@@ -2131,36 +2161,6 @@
           noteHeader: '⚗️ Chemical Reaction Equation & Safety Insight',
           curiosityHeader: '💡 1-Click Acid Beaker Experiment Chips (Runs each experiment cleanly in a fresh beaker with 3-stage drop & foam motion):',
           placeholder: "What should we drop into the HCl beaker? e.g., 'What if we drop a cookie in?', 'What if we add baking soda?'..."
-        }
-      },
-      fairy_tiger_rabbit: {
-        emblem: '🐯',
-        theme: 'storybook',
-        ko: {
-          title: '🐯 호랑이와 토끼의 달빛 고개 전래동화',
-          desc: '떡 하나 주면 안 잡아먹지! 꾀 많은 토끼와 어흥 호랑이의 달빛 솔숲 모험',
-          modeBadge: '🐯 호랑이와 토끼의 달빛 고개 전래동화',
-          charAvatar: '🐰',
-          charName: '꾀돌이 토끼 토토 & 어흥 호랑이',
-          personaBadge: '🐰 토끼 토토 & 🐯 호랑이 캐릭터 보이스',
-          emptyState: '🌕 달빛 솔숲 고개와 꿀떡 바구니 (1페이지 첫 장면)',
-          accumulatedLabel: '🧺 달빛 고개 동화 누적 줄거리 체인:',
-          noteHeader: '✨ 전래동화 지혜 · 호랑이와 토끼의 누적 이야기 해설',
-          curiosityHeader: '💡 호랑이와 토끼 원클릭 동화 전개 칩 (클릭하면 각 장마다 새로운 동화 일러스트와 함께 이야기가 이어집니다):',
-          placeholder: "호랑이와 토끼에게 어떤 일이 벌어질까요? 예: '달이 사라지면 어떻게 되어요?', '호랑이에게 꿀떡을 주면?'..."
-        },
-        en: {
-          title: '🐯 The Tiger & Clever Rabbit Moonlit Tale',
-          desc: 'Korean folk tale adventure with Toto the Clever Rabbit and the Mountain Tiger',
-          modeBadge: '🐯 TIGER & RABBIT FOLK STORYBOOK',
-          charAvatar: '🐰',
-          charName: 'Clever Rabbit Toto & Tiger',
-          personaBadge: '🐰 Clever Rabbit Toto Character Voice',
-          emptyState: '🌕 Moonlit Pine Mountain Pass (Page 1 Scene)',
-          accumulatedLabel: '🧺 Folk Tale Story Continuity Chain:',
-          noteHeader: '✨ Folk Tale Wisdom & Story Continuity Note',
-          curiosityHeader: '💡 1-Click Tiger & Rabbit Story Chips (Generates a new chapter illustration and continues the folk tale):',
-          placeholder: "What happens next with the Tiger and Rabbit? e.g., 'What happens if the moon disappears?', 'What if the rabbit gives honey rice cakes?'..."
         }
       },
       science_space_shuttle: {
@@ -2559,8 +2559,8 @@
     }
 
     function getScenarioProfile(presetId) {
-      const id = presetId || currentPresetId || 'science_hcl_lab';
-      const base = SCENARIO_PROFILES[id] || SCENARIO_PROFILES.science_hcl_lab;
+      const id = presetId || currentPresetId || 'fairy_tiger_rabbit';
+      const base = SCENARIO_PROFILES[id] || SCENARIO_PROFILES.fairy_tiger_rabbit;
       return {
         id,
         emblem: base.emblem,
@@ -2615,7 +2615,7 @@
     }
 
     function applyScenarioInstantUI(presetId) {
-      currentPresetId = presetId || 'science_hcl_lab';
+      currentPresetId = presetId || 'fairy_tiger_rabbit';
       const dict = t();
       const profile = getScenarioProfile(currentPresetId);
 
@@ -2626,8 +2626,8 @@
       }
 
       const allPresetIds = [
-        'science_hcl_lab',
         'fairy_tiger_rabbit',
+        'science_hcl_lab',
         'science_space_shuttle',
         'fairy_starlight_fox',
         'science_space_kitchen'
@@ -4090,7 +4090,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       applyLanguageStaticUI();
       fetchSystemStatus();
-      createNewBook('science_hcl_lab');
+      createNewBook('fairy_tiger_rabbit');
     });
   </script>
 </body>

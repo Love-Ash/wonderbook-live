@@ -109,6 +109,8 @@ def _resolve_lang(book_state: dict[str, Any], user_utterance: str, lang: str | N
 
 def get_item_display_label(item_key: str, lang: str = "ko", fallback_text: str = "") -> str:
     """Return a 100% pure Korean (`ko`) or 100% pure English (`en`) item display label."""
+    if item_key in ("custom_science", "custom_story") and fallback_text and fallback_text.strip():
+        return fallback_text.strip()[:28]
     table = ITEM_DISPLAY_LABELS_EN if lang == "en" else ITEM_DISPLAY_LABELS_KO
     if item_key in table:
         return table[item_key]
