@@ -1,0 +1,8 @@
+.git
+.venv
+.prep
+.env*
+__pycache__
+*.log
+tests
+runtime

@@ -1,0 +1,16 @@
+# WonderBook Live v2.0 — System Architecture & Functional Design (`Design.md`)
+
+## 1. Overview
+**WonderBook Live** is a voice-driven interactive storybook and "What-If" science experiment book built for the Google DeepMind Hackathon. It turns a user's spoken curiosity (e.g., *"염산에 열쇠를 넣으면 어떻게 되나요?"*, *"사과를 넣으면?"*, *"과자를 넣으면?"*, *"물을 뿌리면?"*, or fairy-tale twists) into a continuous multi-page book with cumulative chained illustrations, animated motion, and character voice, then compiles the session into a shareable flipbook upon completion.
+
+## 2. Feature Modules (`goo.gle/hackathon-account` Compliant)
+
+| File | Responsibility |
+| :--- | :--- |
+| `config.py` | Centralizes upgraded model identifiers (`PRIMARY_MODEL="gemini-4-argon"`, `FAST_STORY_MODEL="gemini-3.8-flash"`, `FALLBACK_MODEL="gemini-3.8-flash"`, `NANO_BANANA_PRO_MODEL="gemini-3-pro-image-preview"`, `NANO_BANANA_MODEL="gemini-2.5-flash-image"`, `VEO_MODEL="veo-2.0-generate-001"`), `thinking_level`, cumulative book presets (`BOOK_PRESETS`), and structured `INFO`-level audit loggers (`log_function_call`, `log_genai_call`). |
+| `story_agent.py` | **Upgraded Story & Science Director**: Generates the next page's narrative, character dialogue, scientific principle/safety note, cumulative visual continuity state (`accumulated_items`, `accumulated_labels`, `ph_level`, `temperature_c`), and prompts for Nano Banana and Veo. Supports selectable model tiers (`argon_low`, `flash_ultra`, `argon_medium`) with `503` retry/backoff and model failover (`gemini-4-argon` <-> `gemini-3.8-flash` -> deterministic engine). |
+| `media_agent.py` | **Nano Banana & Veo Cumulative Media Orchestrator**: Chains `prev_image_bytes` from Page $N-1$ into Page $N$ via Nano Banana Pro/Flash (`gemini-3-pro-image-preview` / `gemini-2.5-flash-image`) and a high-craft 1000×640 multi-layer RGBA illustration engine so all accumulated items (`metal_key`, `apple`, `cookie_snack`, `water_spray`, etc.) persist together inside the beaker or storybook scene alongside live pH/temperature meters, animated reaction GIF (`motion.gif`), and playable character voice (`voice.wav`). |
+| `book_store.py` | **Concurrent Book Session & Publisher**: Executes Nano Banana illustration generation and Veo motion/voice synthesis concurrently via `ThreadPoolExecutor(max_workers=2)` for fast page-turn latency, manages multi-turn book state in `runtime/books/<book_id>/`, compiles standalone shareable HTML flipbooks (`export.html`), and syncs artifacts to Google Cloud Storage (`gs://$ARTIFACT_BUCKET/books/<book_id>/`) with SHA-256 verification. |
+| `app.py` | **HTTP Server & REST API**: Serves `/healthz`, `/`, `/api/system-status`, `/api/books`, `/api/books/<id>/turn`, `/api/books/<id>/finish`, `/book/<id>`, and page media endpoints on `0.0.0.0:$PORT`. |
+| `static/index.html` | **Google Stitch Open-Book & Science Lab UI**: Provides an adaptive two-page open-book spread (`science_lab` vs `storybook` themes), model speed/quality tier selector, cumulative item & pH/temperature badges, Web Speech API voice dock, visual continuity filmstrip timeline, and publish/share modal. |
+| `STITCH_DESIGN_GUIDE.md` | **Google Stitch Design Specification**: Documents the Stitch component hierarchy (`data-stitch-section` / `data-stitch-component`), adaptive color tokens, typography scale, and Stitch iteration prompts. |

@@ -1,0 +1,4003 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="science_lab" data-scenario="science_hcl_lab">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>원더북 라이브 — 실시간 음성 인터랙티브 동화책 &amp; 과학 실험실</title>
+  <style>
+    /* ==========================================================================
+       GOOGLE STITCH DESIGN SYSTEM TOKENS — WONDERBOOK LIVE (ULTRA-WIDE 16:9 EDITION)
+       Scenario-Specific Themes:
+         1. [data-scenario="science_hcl_lab"]      — Emerald & Cyan Acid Chemistry Lab
+         2. [data-scenario="fairy_starlight_fox"]  — Warm Gold & Violet Enchanted Storybook
+         3. [data-scenario="science_space_kitchen"]— Deep Indigo & Sky Orbital Space Lab
+       ========================================================================== */
+    :root,
+    [data-theme="science_lab"] {
+      --bg-canvas: #060b16;
+      --bg-canvas-gradient: radial-gradient(circle at 18% 12%, rgba(16, 185, 129, 0.15) 0%, transparent 42%),
+                            radial-gradient(circle at 84% 18%, rgba(56, 189, 248, 0.14) 0%, transparent 45%),
+                            linear-gradient(180deg, #050a14 0%, #0a1324 55%, #070d19 100%);
+      --surface-header: rgba(13, 23, 42, 0.92);
+      --surface-dock: rgba(15, 25, 45, 0.94);
+      --surface-book-cover: #0f2942;
+      --surface-book-cover-border: #1e4976;
+      --surface-page-left: linear-gradient(155deg, #0b1526 0%, #0e1e36 100%);
+      --surface-page-right: linear-gradient(205deg, #0f1d33 0%, #12243e 100%);
+      --surface-card: rgba(10, 20, 36, 0.84);
+      --surface-card-elevated: rgba(17, 32, 56, 0.92);
+      --border-subtle: rgba(56, 189, 248, 0.24);
+      --border-strong: rgba(52, 211, 153, 0.48);
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --accent-primary: #10b981;
+      --accent-primary-hover: #059669;
+      --accent-secondary: #38bdf8;
+      --accent-tertiary: #fbbf24;
+      --accent-glow: rgba(16, 185, 129, 0.34);
+      --badge-bg: rgba(16, 185, 129, 0.16);
+      --badge-text: #6ee7b7;
+      --question-stamp-bg: rgba(251, 191, 36, 0.13);
+      --question-stamp-border: rgba(251, 191, 36, 0.48);
+      --question-stamp-text: #fde68a;
+      --science-card-bg: linear-gradient(135deg, rgba(6, 78, 59, 0.55) 0%, rgba(15, 23, 42, 0.88) 100%);
+      --science-card-border: rgba(52, 211, 153, 0.45);
+      --voice-card-bg: linear-gradient(135deg, rgba(12, 74, 110, 0.48) 0%, rgba(15, 23, 42, 0.88) 100%);
+      --voice-card-border: #38bdf8;
+      --bridge-card-bg: linear-gradient(135deg, rgba(15, 35, 66, 0.92) 0%, rgba(6, 58, 50, 0.72) 100%);
+      --bridge-card-border: rgba(56, 189, 248, 0.52);
+      --chip-bg: rgba(30, 58, 138, 0.48);
+      --chip-border: rgba(56, 189, 248, 0.42);
+      --chip-hover-bg: rgba(16, 185, 129, 0.28);
+      --chip-hover-border: #34d399;
+      --spine-shadow: linear-gradient(90deg,
+        rgba(0, 0, 0, 0.0) 0%,
+        rgba(2, 6, 23, 0.55) 42%,
+        rgba(56, 189, 248, 0.18) 50%,
+        rgba(2, 6, 23, 0.55) 58%,
+        rgba(0, 0, 0, 0.0) 100%);
+      --font-display: 'Pretendard', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --font-body: 'Pretendard', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
+    }
+
+    [data-scenario="science_space_kitchen"],
+    [data-scenario="science_space_shuttle"] {
+      --bg-canvas: #050818;
+      --bg-canvas-gradient: radial-gradient(circle at 20% 12%, rgba(99, 102, 241, 0.2) 0%, transparent 45%),
+                            radial-gradient(circle at 82% 18%, rgba(56, 189, 248, 0.18) 0%, transparent 45%),
+                            linear-gradient(180deg, #040714 0%, #0b1330 55%, #060a1c 100%);
+      --surface-book-cover: #17204a;
+      --surface-book-cover-border: #3b82f6;
+      --surface-page-left: linear-gradient(155deg, #0b112c 0%, #111c42 100%);
+      --surface-page-right: linear-gradient(205deg, #0f1738 0%, #15224c 100%);
+      --accent-primary: #38bdf8;
+      --accent-secondary: #818cf8;
+      --border-strong: rgba(56, 189, 248, 0.52);
+      --badge-bg: rgba(56, 189, 248, 0.18);
+      --badge-text: #bae6fd;
+      --science-card-bg: linear-gradient(135deg, rgba(30, 58, 138, 0.58) 0%, rgba(15, 23, 42, 0.9) 100%);
+      --science-card-border: rgba(96, 165, 250, 0.5);
+    }
+
+    [data-theme="storybook"],
+    [data-scenario="fairy_starlight_fox"],
+    [data-scenario="fairy_tiger_rabbit"] {
+      --bg-canvas: #0f0a1e;
+      --bg-canvas-gradient: radial-gradient(circle at 20% 15%, rgba(251, 191, 36, 0.16) 0%, transparent 42%),
+                            radial-gradient(circle at 82% 20%, rgba(244, 114, 182, 0.16) 0%, transparent 45%),
+                            linear-gradient(180deg, #0d081a 0%, #191130 55%, #110b22 100%);
+      --surface-header: rgba(26, 18, 48, 0.92);
+      --surface-dock: rgba(30, 20, 56, 0.94);
+      --surface-book-cover: #3b1d5e;
+      --surface-book-cover-border: #7c3aed;
+      --surface-page-left: linear-gradient(155deg, #17102c 0%, #22173f 100%);
+      --surface-page-right: linear-gradient(205deg, #21173b 0%, #2a1d49 100%);
+      --surface-card: rgba(24, 16, 44, 0.84);
+      --surface-card-elevated: rgba(39, 26, 68, 0.92);
+      --border-subtle: rgba(251, 191, 36, 0.28);
+      --border-strong: rgba(244, 114, 182, 0.52);
+      --text-primary: #fdf8f5;
+      --text-secondary: #e9d5ff;
+      --text-muted: #c4b5fd;
+      --accent-primary: #f59e0b;
+      --accent-primary-hover: #d97706;
+      --accent-secondary: #f472b6;
+      --accent-tertiary: #fbbf24;
+      --accent-glow: rgba(245, 158, 11, 0.34);
+      --badge-bg: rgba(245, 158, 11, 0.18);
+      --badge-text: #fde68a;
+      --question-stamp-bg: rgba(244, 114, 182, 0.15);
+      --question-stamp-border: rgba(244, 114, 182, 0.5);
+      --question-stamp-text: #fbcfe8;
+      --science-card-bg: linear-gradient(135deg, rgba(88, 28, 135, 0.52) 0%, rgba(28, 19, 51, 0.9) 100%);
+      --science-card-border: rgba(251, 191, 36, 0.45);
+      --voice-card-bg: linear-gradient(135deg, rgba(112, 26, 117, 0.45) 0%, rgba(28, 19, 51, 0.9) 100%);
+      --voice-card-border: #f472b6;
+      --bridge-card-bg: linear-gradient(135deg, rgba(59, 22, 99, 0.92) 0%, rgba(92, 28, 84, 0.76) 100%);
+      --bridge-card-border: rgba(251, 191, 36, 0.55);
+      --chip-bg: rgba(76, 29, 149, 0.48);
+      --chip-border: rgba(244, 114, 182, 0.44);
+      --chip-hover-bg: rgba(245, 158, 11, 0.28);
+      --chip-hover-border: #fbbf24;
+      --spine-shadow: linear-gradient(90deg,
+        rgba(0, 0, 0, 0.0) 0%,
+        rgba(15, 7, 30, 0.6) 42%,
+        rgba(251, 191, 36, 0.22) 50%,
+        rgba(15, 7, 30, 0.6) 58%,
+        rgba(0, 0, 0, 0.0) 100%);
+      --font-display: 'Georgia', 'Pretendard', serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: var(--font-body);
+      background-color: var(--bg-canvas);
+      background-image: var(--bg-canvas-gradient);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      transition: background 0.35s ease, color 0.25s ease;
+    }
+
+    /* Ultra-Wide Viewport Shell */
+    .app-shell,
+    .stitch-shell {
+      max-width: 1880px;
+      width: 97vw;
+      margin: 0 auto;
+      padding: 14px 22px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    body.cinema-mode .app-shell,
+    body.cinema-mode .stitch-shell {
+      max-width: 1960px;
+      width: 98.5vw;
+    }
+
+    /* ==========================================================================
+       1. TOP NAVIGATION & ORCHESTRATION HEADER (data-stitch-section="top-nav")
+       ========================================================================== */
+    .top-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 12px 20px;
+      background: var(--surface-header);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.55);
+    }
+
+    .brand-cluster {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-emblem {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 23px;
+      box-shadow: 0 0 18px var(--accent-glow);
+      flex-shrink: 0;
+    }
+
+    .brand-titles {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-name-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .brand-name {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .mode-pill {
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      padding: 4px 11px;
+      border-radius: 999px;
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      border: 1px solid var(--border-strong);
+    }
+
+    .brand-subtitle {
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    .orchestration-controls {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface-card);
+      padding: 4px 9px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .control-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    select.stitch-select {
+      background: transparent;
+      color: var(--text-primary);
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 5px 6px;
+      border-radius: 6px;
+      cursor: pointer;
+      outline: none;
+    }
+
+    select.stitch-select option {
+      background: #0f172a;
+      color: #f8fafc;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      white-space: nowrap;
+      color: #ffffff;
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .btn-new-book {
+      background: rgba(56, 189, 248, 0.16);
+      border-color: rgba(56, 189, 248, 0.45);
+      color: #e0f2fe;
+    }
+    .btn-new-book:hover:not(:disabled) {
+      background: rgba(56, 189, 248, 0.28);
+      transform: translateY(-1px);
+    }
+
+    /* Prominent Language Toggle Button (#btnLangToggle) */
+    .btn-lang-toggle {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1.5px solid var(--accent-secondary);
+      color: var(--text-primary);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    }
+    .btn-lang-toggle:hover {
+      background: rgba(56, 189, 248, 0.2);
+      transform: translateY(-1px);
+    }
+    .lang-opt {
+      padding: 2px 7px;
+      border-radius: 999px;
+      transition: all 0.16s ease;
+    }
+    .lang-opt.active {
+      background: var(--accent-primary);
+      color: #04101c;
+      font-weight: 900;
+    }
+
+    .btn-cinema {
+      background: rgba(251, 191, 36, 0.15);
+      border-color: rgba(251, 191, 36, 0.5);
+      color: #fde68a;
+    }
+    .btn-cinema:hover:not(:disabled) {
+      background: rgba(251, 191, 36, 0.28);
+      transform: translateY(-1px);
+    }
+    body.cinema-mode .btn-cinema {
+      background: linear-gradient(135deg, #f59e0b, #10b981);
+      border-color: #ffffff;
+      color: #040811;
+      box-shadow: 0 0 18px rgba(245, 158, 11, 0.45);
+    }
+
+    .btn-publish {
+      background: linear-gradient(135deg, var(--accent-primary), #0284c7);
+      border-color: rgba(255, 255, 255, 0.22);
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+    .btn-publish:hover:not(:disabled) {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--surface-card-elevated);
+      border-color: var(--border-subtle);
+      color: var(--text-secondary);
+    }
+    .btn-secondary:hover:not(:disabled) {
+      border-color: var(--accent-secondary);
+      color: var(--text-primary);
+    }
+
+    .btn-character-voice {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.28), rgba(56, 189, 248, 0.28));
+      border: 1px solid var(--border-strong);
+      color: #f8fafc;
+      font-weight: 800;
+    }
+    .btn-character-voice:hover:not(:disabled) {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.45), rgba(56, 189, 248, 0.45));
+      transform: translateY(-1px);
+    }
+
+    /* Pipeline Telemetry Pills */
+    .pipeline-pills {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .pipeline-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+    }
+
+    .pipeline-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-primary);
+      box-shadow: 0 0 8px var(--accent-primary);
+    }
+
+    /* ==========================================================================
+       1A. CUSTOM BOOK CREATOR BAR ("내가 원하는 주제로 새 책 시작하기")
+       ========================================================================== */
+    .custom-book-creator-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 14px;
+      background: linear-gradient(90deg, rgba(15, 23, 42, 0.92), rgba(30, 41, 59, 0.88));
+      border: 1.5px solid var(--border-strong);
+      box-shadow: 0 8px 22px -8px rgba(0, 0, 0, 0.5);
+    }
+
+    .custom-creator-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .custom-creator-badge {
+      font-size: 12px;
+      font-weight: 800;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: rgba(251, 191, 36, 0.18);
+      border: 1px solid rgba(251, 191, 36, 0.55);
+      color: #fde68a;
+      white-space: nowrap;
+    }
+
+    .custom-book-input {
+      flex: 1;
+      min-width: 220px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(4, 9, 20, 0.82);
+      color: var(--text-primary);
+      font-size: 13.5px;
+      font-weight: 600;
+      outline: none;
+    }
+
+    .custom-book-input:focus {
+      border-color: #fbbf24;
+      box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.25);
+    }
+
+    .custom-creator-quick-chips {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .quick-book-chip {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.42);
+      color: #e0f2fe;
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+
+    .quick-book-chip:hover {
+      background: rgba(251, 191, 36, 0.24);
+      border-color: #fbbf24;
+      color: #fef3c7;
+      transform: translateY(-1px);
+    }
+
+    /* ==========================================================================
+       1B. PROMINENT 5-BOOK SCENARIO SELECTOR SHELF (#scenarioBookShelf)
+       ========================================================================== */
+    .scenario-bookshelf {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    @media (max-width: 1280px) {
+      .scenario-bookshelf {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 760px) {
+      .scenario-bookshelf {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .scenario-book-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 13px;
+      border-radius: 14px;
+      background: var(--surface-card);
+      border: 1.5px solid var(--border-subtle);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+      color: var(--text-primary);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scenario-book-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-secondary);
+      background: var(--surface-card-elevated);
+    }
+
+    .scenario-book-card.active {
+      border: 2px solid var(--accent-primary);
+      background: var(--surface-card-elevated);
+      box-shadow: 0 8px 24px -6px var(--accent-glow);
+    }
+
+    .scenario-book-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .scenario-book-texts {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .scenario-book-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .scenario-book-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .scenario-active-pill {
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .scenario-book-card.active .scenario-active-pill {
+      background: var(--accent-primary);
+      color: #03111c;
+    }
+
+    /* Inline Publish Status Banner */
+    .status-banner {
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, rgba(6, 78, 59, 0.9), rgba(15, 23, 42, 0.92));
+      border: 1px solid #34d399;
+      color: #d1fae5;
+      font-size: 13px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* ==========================================================================
+       2. OPEN-BOOK SPREAD LAYOUT (ULTRA-WIDE 16:9 STAGE + NARRATIVE PAGE)
+       ========================================================================== */
+    .book-outer-frame {
+      position: relative;
+      padding: 12px;
+      border-radius: 24px;
+      background: var(--surface-book-cover);
+      border: 2px solid var(--surface-book-cover-border);
+      box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.8),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      transition: background 0.35s ease, border-color 0.35s ease;
+    }
+
+    .book-spread {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.42fr 1fr;
+      border-radius: 18px;
+      overflow: hidden;
+      background: var(--surface-page-left);
+      border: 1px solid var(--border-subtle);
+      min-height: 680px;
+      transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    body.cinema-mode .book-spread {
+      grid-template-columns: 1.75fr 0.95fr;
+      min-height: 760px;
+    }
+
+    .book-spread.turning-page {
+      animation: pageFlipPulse 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @keyframes pageFlipPulse {
+      0% { transform: scale(0.995) rotateY(-1deg); opacity: 0.92; }
+      50% { transform: scale(1.002) rotateY(0.6deg); opacity: 0.98; }
+      100% { transform: scale(1) rotateY(0); opacity: 1; }
+    }
+
+    /* Center Book Spine Shadow aligned to 1.42fr : 1fr (58.68%) */
+    .book-spine {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 58.68%;
+      width: 36px;
+      transform: translateX(-50%);
+      background: var(--spine-shadow);
+      pointer-events: none;
+      z-index: 10;
+      transition: left 0.35s ease;
+    }
+
+    body.cinema-mode .book-spine {
+      left: 64.81%;
+    }
+
+    @media (max-width: 1120px) {
+      .book-spread,
+      body.cinema-mode .book-spread {
+        grid-template-columns: 1fr;
+      }
+      .book-spine {
+        display: none;
+      }
+    }
+
+    .book-page {
+      padding: 22px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+    }
+
+    .book-page-left {
+      background: var(--surface-page-left);
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .book-page-right {
+      background: var(--surface-page-right);
+    }
+
+    /* Left Page: Visual Stage Header */
+    .stage-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .stage-title-cluster {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .folio-badge {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 7px;
+      background: rgba(56, 189, 248, 0.14);
+      color: var(--accent-secondary);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .stage-controls-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .view-tabs {
+      display: inline-flex;
+      background: rgba(6, 11, 22, 0.72);
+      padding: 4px;
+      border-radius: 11px;
+      border: 1px solid var(--border-subtle);
+      gap: 4px;
+    }
+
+    .view-tab {
+      padding: 7px 13px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+
+    .view-tab.active {
+      background: var(--surface-card-elevated);
+      color: var(--text-primary);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-strong);
+    }
+
+    /* 16:9 Widescreen High-Resolution Visual Canvas */
+    .visual-canvas-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      min-height: 520px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #070d19;
+      border: 1px solid var(--border-strong);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: min-height 0.35s ease;
+    }
+
+    body.cinema-mode .visual-canvas-frame {
+      min-height: 640px;
+    }
+
+    .visual-stage-media,
+    .scene-view {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      image-rendering: auto;
+      transition: opacity 0.25s ease, transform 0.35s ease;
+    }
+
+    /* Non-intrusive Corner Badges */
+    .canvas-corner-overlay {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .canvas-live-tag {
+      background: rgba(6, 11, 22, 0.76);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-strong);
+      color: var(--badge-text);
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 999px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+    }
+
+    .canvas-hd-spec-tag {
+      background: rgba(15, 23, 42, 0.78);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      color: #e0f2fe;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 11px;
+      border-radius: 999px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+    }
+
+    /* NON-BLOCKING PROGRESS RIBBON (Never covers or darkens the 16:9 illustration!) */
+    .shimmer-overlay {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      top: auto;
+      background: rgba(6, 14, 28, 0.90);
+      border: 1.5px solid var(--accent-primary);
+      border-radius: 14px;
+      display: none;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 14px;
+      padding: 10px 16px;
+      text-align: left;
+      z-index: 5;
+      pointer-events: none;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
+    }
+
+    .shimmer-overlay.active {
+      display: flex;
+    }
+
+    .spinner-ring {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      border: 3px solid rgba(56, 189, 248, 0.25);
+      border-top-color: var(--accent-primary);
+      border-right-color: var(--accent-tertiary);
+      animation: spinRing 0.65s linear infinite;
+    }
+
+    @keyframes spinRing {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Veo 3-Stage Process Stepper Bar */
+    .veo-process-stepper {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: rgba(6, 11, 22, 0.72);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 8px 10px;
+    }
+
+    .veo-stage-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .veo-stage-pill:hover,
+    .veo-stage-pill.active {
+      border-color: var(--accent-primary);
+      background: rgba(16, 185, 129, 0.16);
+      color: #ffffff;
+    }
+
+    /* ==========================================================================
+       EXPLICIT MULTI-TURN CONTEXT CONTINUITY BRIDGE (#contextBridgeCard)
+       ========================================================================== */
+    .context-bridge-card {
+      display: none !important;
+      background: var(--bridge-card-bg);
+      border: 1.5px solid var(--bridge-card-border);
+      border-radius: 14px;
+      padding: 12px 15px;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 10px 26px -8px rgba(0, 0, 0, 0.5);
+    }
+
+    .control-group[data-stitch-component="preset-selector"] {
+      display: none !important;
+    }
+
+    .context-bridge-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .context-bridge-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 800;
+      color: #fde68a;
+      letter-spacing: -0.01em;
+    }
+
+    .context-bridge-flow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: rgba(4, 9, 20, 0.58);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+
+    .bridge-thumb-box {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      padding: 6px 10px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      flex-shrink: 0;
+    }
+
+    .bridge-thumb-box:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-tertiary);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+    }
+
+    .bridge-thumb-img {
+      width: 76px;
+      height: 44px;
+      aspect-ratio: 16 / 9;
+      border-radius: 6px;
+      object-fit: cover;
+      background: #040811;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .bridge-thumb-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .bridge-thumb-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent-secondary);
+    }
+
+    .bridge-thumb-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .bridge-arrow-badge {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--accent-primary);
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      white-space: nowrap;
+    }
+
+    .bridge-formula-summary {
+      flex: 1;
+      min-width: 240px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .bridge-formula-highlight {
+      color: #fde68a;
+      font-weight: 800;
+    }
+
+    .bridge-continuity-reason {
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--text-secondary);
+      padding-top: 4px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.12);
+    }
+
+    /* Cumulative Scene State Strip */
+    .cumulative-strip {
+      background: var(--surface-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .strip-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chain-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.14);
+      color: #7dd3fc;
+      border: 1px solid rgba(56, 189, 248, 0.38);
+    }
+
+    .lab-metrics-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    /* Strictly hide lab metrics in storybook mode */
+    [data-theme="storybook"] .lab-metrics-group,
+    [data-scenario="fairy_starlight_fox"] .lab-metrics-group,
+    [data-scenario="fairy_tiger_rabbit"] .lab-metrics-group {
+      display: none !important;
+    }
+
+    .metric-pill {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 6px;
+      background: rgba(16, 185, 129, 0.14);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+
+    .metric-pill.temp-pill {
+      background: rgba(251, 191, 36, 0.14);
+      color: #fde68a;
+      border-color: rgba(251, 191, 36, 0.35);
+    }
+
+    .accumulated-items-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .accumulated-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-right: 4px;
+    }
+
+    .item-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 11px;
+      border-radius: 999px;
+      background: var(--surface-card-elevated);
+      border: 1px solid var(--border-strong);
+      color: var(--text-primary);
+    }
+
+    /* Collapsible Prompt Inspector */
+    details.prompt-inspector {
+      background: rgba(6, 11, 22, 0.55);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    details.prompt-inspector summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--text-secondary);
+      user-select: none;
+    }
+
+    .prompt-inspector-body {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      line-height: 1.45;
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+
+    /* Right Page: Narrative, Character Voice & Science/Story Note */
+    .question-stamp {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      background: var(--question-stamp-bg);
+      border: 1px solid var(--question-stamp-border);
+      color: var(--question-stamp-text);
+      font-size: 13.5px;
+      font-weight: 700;
+    }
+
+    .narrative-title {
+      margin: 2px 0 4px 0;
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1.28;
+      letter-spacing: -0.015em;
+      color: var(--text-primary);
+    }
+
+    .story-paragraphs {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 15.5px;
+      line-height: 1.72;
+      color: var(--text-secondary);
+    }
+
+    .story-paragraphs p {
+      margin: 0;
+      padding: 11px 15px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.035);
+      border-left: 3px solid var(--accent-secondary);
+    }
+
+    /* Character Voice Card */
+    .character-voice-card {
+      background: var(--voice-card-bg);
+      border: 1px solid var(--border-subtle);
+      border-left: 4px solid var(--voice-card-border);
+      border-radius: 12px;
+      padding: 13px 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .voice-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .character-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 21px;
+      flex-shrink: 0;
+    }
+
+    .voice-dialogue-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .character-name-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .character-name-badge {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--accent-secondary);
+    }
+
+    .persona-voice-pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.18);
+      border: 1px solid var(--border-strong);
+      color: var(--badge-text);
+    }
+
+    .character-dialogue-text {
+      font-size: 14.5px;
+      font-weight: 600;
+      line-height: 1.55;
+      color: var(--text-primary);
+    }
+
+    .voice-controls-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .voice-controls-row audio {
+      height: 34px;
+      flex: 1;
+      min-width: 180px;
+      border-radius: 8px;
+    }
+
+    .auto-speak-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* Science Equation / Story Continuity Card */
+    .science-note-card {
+      background: var(--science-card-bg);
+      border: 1px solid var(--science-card-border);
+      border-radius: 12px;
+      padding: 13px 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .science-note-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: var(--badge-text);
+    }
+
+    .science-note-body {
+      font-size: 14px;
+      line-height: 1.58;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    /* Page Flip Footer Controls */
+    .page-flip-footer {
+      margin-top: auto;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .telemetry-line {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .flip-buttons-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .page-indicator-pill {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: rgba(6, 11, 22, 0.65);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+    }
+
+    /* ==========================================================================
+       3. INTERACTIVE VOICE & "WHAT-IF" COMMAND DOCK (data-stitch-section="voice-dock")
+       ========================================================================== */
+    .voice-dock {
+      background: var(--surface-dock);
+      border: 1px solid var(--border-strong);
+      border-radius: 18px;
+      padding: 15px 20px;
+      box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .voice-input-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-mic {
+      position: relative;
+      background: rgba(239, 68, 68, 0.16);
+      border: 1px solid rgba(248, 113, 113, 0.5);
+      color: #fecaca;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .btn-mic:hover {
+      background: rgba(239, 68, 68, 0.28);
+    }
+
+    .btn-mic.mic-active {
+      background: #dc2626;
+      border-color: #f87171;
+      color: #ffffff;
+      animation: micPulseRing 1.25s infinite;
+    }
+
+    @keyframes micPulseRing {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      70% { box-shadow: 0 0 0 14px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+
+    .utterance-input {
+      flex: 1;
+      min-width: 280px;
+      padding: 11px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(6, 11, 22, 0.78);
+      color: var(--text-primary);
+      font-size: 14.5px;
+      font-weight: 500;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .utterance-input:focus {
+      border-color: var(--accent-secondary);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    }
+
+    .btn-ask {
+      background: linear-gradient(135deg, var(--accent-secondary), #2563eb);
+      padding: 11px 22px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 800;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    }
+
+    .curiosity-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .curiosity-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      background: var(--chip-bg);
+      border: 1px solid var(--chip-border);
+      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.16s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chip:hover {
+      background: var(--chip-hover-bg);
+      border-color: var(--chip-hover-border);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    .chip.tested-chip {
+      border-color: rgba(52, 211, 153, 0.45);
+      background: rgba(6, 78, 59, 0.38);
+    }
+
+    /* ==========================================================================
+       4. VISUAL CONTINUITY FILMSTRIP TIMELINE (data-stitch-section="continuity-filmstrip")
+       ========================================================================== */
+    .continuity-filmstrip-section {
+      background: var(--surface-header);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 12px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .filmstrip-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .filmstrip-track {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .filmstrip-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 7px 11px;
+      min-width: 235px;
+      max-width: 280px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      flex-shrink: 0;
+    }
+
+    .filmstrip-card:hover {
+      border-color: var(--accent-secondary);
+      transform: translateY(-2px);
+    }
+
+    .filmstrip-card.active {
+      border: 2px solid var(--accent-primary);
+      background: var(--surface-card-elevated);
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+
+    .filmstrip-thumb {
+      width: 68px;
+      height: 40px;
+      aspect-ratio: 16 / 9;
+      border-radius: 7px;
+      object-fit: cover;
+      background: #040811;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      flex-shrink: 0;
+    }
+
+    .filmstrip-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow: hidden;
+    }
+
+    .filmstrip-page-num {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent-secondary);
+    }
+
+    .filmstrip-question {
+      font-size: 11.5px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .filmstrip-arrow {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--accent-primary);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================================
+       5. PUBLISHED BOOK & SHARE MODAL (data-stitch-section="publish-modal")
+       ========================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.8);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 100;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .publish-modal-card {
+      background: #0f172a;
+      border: 1px solid var(--border-strong);
+      border-radius: 20px;
+      max-width: 580px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .modal-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #f8fafc;
+      margin: 0;
+    }
+
+    .share-url-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .share-url-input {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      background: #020617;
+      color: #38bdf8;
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+
+    .proof-box {
+      background: #020617;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 12px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: #94a3b8;
+      line-height: 1.55;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <div class="stitch-shell app-shell">
+    <!-- ======================================================================
+         1. TOP NAVIGATION & ORCHESTRATION HEADER
+         ====================================================================== -->
+    <header class="top-nav" data-stitch-section="top-nav">
+      <div class="brand-cluster">
+        <div class="brand-emblem" id="brandEmblem">🧪</div>
+        <div class="brand-titles">
+          <div class="brand-name-row">
+            <span class="brand-name" id="brandTitleText">원더북 라이브</span>
+            <span class="mode-pill" id="modeBadgePill">🧪 노바 박사의 염산 실험실</span>
+          </div>
+          <span class="brand-subtitle" id="brandSubtitleText">실시간 음성 인터랙티브 동화책 &amp; 안전 과학 실험실</span>
+        </div>
+      </div>
+
+      <div class="orchestration-controls">
+        <!-- Strict Korean / English Toggle Button (#btnLangToggle) -->
+        <button id="btnLangToggle" class="btn btn-lang-toggle" onclick="toggleLanguage()" title="한국어 / English 언어 전환">
+          <span id="langOptKo" class="lang-opt active">🇰🇷 한국어</span>
+          <span style="opacity:0.45;">|</span>
+          <span id="langOptEn" class="lang-opt">🇺🇸 English</span>
+        </button>
+
+        <!-- Scenario Preset Selector -->
+        <div class="control-group" data-stitch-component="preset-selector">
+          <span class="control-label" id="lblScenario">시나리오 북</span>
+          <select id="presetSelect" class="stitch-select" onchange="createNewBook(this.value)">
+            <option value="science_hcl_lab" id="optPresetHcl">🧪 노바 박사의 염산 실험실</option>
+            <option value="fairy_tiger_rabbit" id="optPresetTiger">🐯 호랑이와 토끼의 달빛 고개 동화</option>
+            <option value="science_space_shuttle" id="optPresetShuttle">🚀 우주왕복선 안 무중력 실험책</option>
+            <option value="fairy_starlight_fox" id="optPresetFox">🦊 아기 여우 루미의 별빛 숲 동화</option>
+            <option value="science_space_kitchen" id="optPresetSpace">🛰️ 오르빗 대장의 무중력 우주 실험실</option>
+          </select>
+          <button id="newBookBtn" class="btn btn-new-book" onclick="createNewBook(document.getElementById('presetSelect').value)">+ 처음부터 새로 시작</button>
+          <button id="btnNewBook" class="btn btn-new-book" style="display:none;" onclick="createNewBook(document.getElementById('presetSelect').value)">+ 처음부터 새로 시작</button>
+        </div>
+
+        <!-- Model Speed / Quality Tier Selector -->
+        <div class="control-group" data-stitch-component="model-tier-selector">
+          <span class="control-label" id="lblSpeedTier">추론 모드</span>
+          <select id="fastModeSelect" class="stitch-select">
+            <option value="flash_ultra" id="optTierUltra" selected>🚀 초고속 병렬 모드 (즉시 응답)</option>
+            <option value="argon_low" id="optTierLow">⚡ 고속 추론 모드 (빠른 응답)</option>
+            <option value="argon_medium" id="optTierMedium">🧠 심층 추론 모드 (정밀 분석)</option>
+          </select>
+        </div>
+
+        <!-- Cinema Wide Mode Toggle Button -->
+        <button id="btnCinemaMode" class="btn btn-cinema" onclick="toggleCinemaMode()">
+          ⛶ 와이드 시네마 뷰
+        </button>
+
+        <!-- Live Pipeline Status Pills -->
+        <div class="pipeline-pills" data-stitch-component="pipeline-pills">
+          <span class="pipeline-pill">
+            <span class="pipeline-dot"></span>
+            <span id="pillStoryModel">초고속 병렬 감독</span>
+          </span>
+          <span class="pipeline-pill">
+            🎨 <span id="pillImageModel">나노 바나나 16:9</span>
+          </span>
+          <span class="pipeline-pill">
+            🎬 <span id="pillMotionModel">Veo 3단계 과정 모션</span>
+          </span>
+          <span class="pipeline-pill">
+            ⏱️ <span id="pillTurnLatency">-- ms</span>
+          </span>
+        </div>
+
+        <!-- Primary CTA: Finish & Publish Book -->
+        <button id="publishBtn" class="btn btn-publish" onclick="finishAndPublishBook()">
+          ✨ 완본 저장 및 공유
+        </button>
+        <button id="btnFinishBook" class="btn btn-publish" style="display:none;" onclick="finishAndPublishBook()">
+          ✨ 완본 저장 및 공유
+        </button>
+      </div>
+    </header>
+
+    <!-- ======================================================================
+         1A. CUSTOM BOOK CREATOR BAR ("내가 원하는 책으로 바로 시작하기")
+         ====================================================================== -->
+    <section id="customBookCreatorBar" class="custom-book-creator-bar" data-stitch-section="custom-book-creator">
+      <div class="custom-creator-left">
+        <span class="custom-creator-badge" id="lblCustomCreatorBadge">✨ 원하는 주제로 책 만들기</span>
+        <input
+          type="text"
+          id="customBookPromptInput"
+          class="custom-book-input"
+          placeholder="예: '호랑이랑 토끼가 나오는 동화책 시작해줘', '우주왕복선 안에서 할 수 있는 실험책 만들어줘'..."
+          onkeydown="if(event.key === 'Enter'){ event.preventDefault(); createCustomBookFromInput(); }"
+        />
+        <button id="btnCreateCustomBook" class="btn btn-publish" style="padding:8px 15px;" onclick="createCustomBookFromInput()">
+          📖 내 주제로 책 시작
+        </button>
+      </div>
+      <div class="custom-creator-quick-chips">
+        <button type="button" class="quick-book-chip" id="quickBtnTigerRabbit" onclick="createCustomBookWithPrompt(currentLang === 'ko' ? '호랑이랑 토끼가 나오는 동화책 시작해줘' : 'Start a fairy tale book with a tiger and a rabbit')">
+          🐯🐰 호랑이랑 토끼 동화책 시작
+        </button>
+        <button type="button" class="quick-book-chip" id="quickBtnSpaceShuttle" onclick="createCustomBookWithPrompt(currentLang === 'ko' ? '우주왕복선 안에서 할 수 있는 실험책 만들어줘' : 'Create a science experiment book inside a Space Shuttle')">
+          🚀 우주왕복선 안 실험책 시작
+        </button>
+        <button type="button" class="quick-book-chip" id="quickBtnHclLab" onclick="createNewBook('science_hcl_lab')">
+          🧪 염산 비커 화학 실험실
+        </button>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         1B. PROMINENT 5-BOOK SCENARIO SELECTOR SHELF (#scenarioBookShelf)
+         ====================================================================== -->
+    <nav id="scenarioBookShelf" class="scenario-bookshelf" aria-label="시나리오 북 선택">
+      <button
+        type="button"
+        id="bookTab_science_hcl_lab"
+        class="scenario-book-card active"
+        onclick="createNewBook('science_hcl_lab')"
+      >
+        <div class="scenario-book-icon">🧪</div>
+        <div class="scenario-book-texts">
+          <div class="scenario-book-title" id="cardTitleHcl">🧪 노바 박사의 염산 실험실</div>
+          <div class="scenario-book-desc" id="cardDescHcl">과자·열쇠·베이킹소다 투입 ➔ 거품 폭발 3단계 과정 실험북</div>
+        </div>
+        <span class="scenario-active-pill" id="cardBadgeHcl">현재 열람 중</span>
+      </button>
+
+      <button
+        type="button"
+        id="bookTab_fairy_tiger_rabbit"
+        class="scenario-book-card"
+        onclick="createNewBook('fairy_tiger_rabbit')"
+      >
+        <div class="scenario-book-icon">🐯</div>
+        <div class="scenario-book-texts">
+          <div class="scenario-book-title" id="cardTitleTiger">🐯 호랑이와 토끼의 달빛 고개</div>
+          <div class="scenario-book-desc" id="cardDescTiger">호랑이와 토끼가 꿀떡·조약돌로 펼치는 전래 마법 동화책</div>
+        </div>
+        <span class="scenario-active-pill" id="cardBadgeTiger">책 펼치기</span>
+      </button>
+
+      <button
+        type="button"
+        id="bookTab_science_space_shuttle"
+        class="scenario-book-card"
+        onclick="createNewBook('science_space_shuttle')"
+      >
+        <div class="scenario-book-icon">🚀</div>
+        <div class="scenario-book-texts">
+          <div class="scenario-book-title" id="cardTitleShuttle">🚀 우주왕복선 무중력 실험책</div>
+          <div class="scenario-book-desc" id="cardDescShuttle">우주왕복선 조종석에서 물방울·불꽃·과자를 실험하는 과학북</div>
+        </div>
+        <span class="scenario-active-pill" id="cardBadgeShuttle">책 펼치기</span>
+      </button>
+
+      <button
+        type="button"
+        id="bookTab_fairy_starlight_fox"
+        class="scenario-book-card"
+        onclick="createNewBook('fairy_starlight_fox')"
+      >
+        <div class="scenario-book-icon">🦊</div>
+        <div class="scenario-book-texts">
+          <div class="scenario-book-title" id="cardTitleFox">🦊 아기 여우 루미의 별빛 숲 동화</div>
+          <div class="scenario-book-desc" id="cardDescFox">아기 여우 루미와 속삭이는 나무 문 너머 펼쳐지는 마법 동화책</div>
+        </div>
+        <span class="scenario-active-pill" id="cardBadgeFox">책 펼치기</span>
+      </button>
+
+      <button
+        type="button"
+        id="bookTab_science_space_kitchen"
+        class="scenario-book-card"
+        onclick="createNewBook('science_space_kitchen')"
+      >
+        <div class="scenario-book-icon">🛰️</div>
+        <div class="scenario-book-texts">
+          <div class="scenario-book-title" id="cardTitleSpace">🛰️ 오르빗 대장의 우주정거장</div>
+          <div class="scenario-book-desc" id="cardDescSpace">오르빗 우주선장과 우주정거장 큐폴라에서 실험하는 무중력 과학북</div>
+        </div>
+        <span class="scenario-active-pill" id="cardBadgeSpace">책 펼치기</span>
+      </button>
+    </nav>
+
+    <!-- Inline Publish Banner -->
+    <div id="publishBanner" class="status-banner"></div>
+
+    <!-- ======================================================================
+         2. OPEN-BOOK SPREAD LAYOUT (1.42fr WIDE VISUAL STAGE : 1fr NARRATIVE)
+         ====================================================================== -->
+    <main class="book-outer-frame" data-stitch-section="book-spread">
+      <div class="book-spread" id="bookSpreadContainer">
+        <div class="book-spine"></div>
+
+        <!-- LEFT PAGE: 16:9 WIDESCREEN VISUAL CONTINUITY & MOTION STAGE -->
+        <section class="book-page book-page-left" data-stitch-component="visual-stage">
+          <div class="stage-header">
+            <div class="stage-title-cluster">
+              <span class="folio-badge" id="leftFolioBadge">01장 / 01장</span>
+              <strong id="visualModeLabel" style="font-size:13.5px; color:var(--text-secondary);">
+                🎨 나노 바나나 고화질 일러스트
+              </strong>
+            </div>
+
+            <div class="stage-controls-right">
+              <div class="view-tabs" role="tablist">
+                <button id="tabImage" class="view-tab active" onclick="setMediaView('image')">
+                  🎨 나노 바나나 16:9 결과 일러스트
+                </button>
+                <button id="tabMotion" class="view-tab" onclick="setMediaView('motion')">
+                  🎬 Veo 3단계 과정 (투입➔잠김➔거품)
+                </button>
+              </div>
+              <button id="btnCinemaModeStage" class="btn btn-cinema" style="padding:6px 11px; font-size:12px;" onclick="toggleCinemaMode()">
+                ⛶ 시네마 확장
+              </button>
+            </div>
+          </div>
+
+          <!-- Main 16:9 Widescreen Visual Canvas -->
+          <div class="visual-canvas-frame" id="visualCanvasFrame">
+            <img id="stageImage" class="scene-view visual-stage-media" alt="Scene Illustration" src="" />
+            <img id="stageMotion" class="scene-view visual-stage-media" alt="Living Motion Scene" src="" style="display:none;" />
+            <img id="sceneImage" class="scene-view visual-stage-media" alt="WonderBook Scene" src="" style="display:none;" />
+
+            <div class="canvas-corner-overlay">
+              <span class="canvas-live-tag" id="activeItemOverlayBadge">1페이지 기본 장면</span>
+              <span class="canvas-hd-spec-tag" id="canvasSpecBadge">나노 바나나 16:9 · Veo 3단계 과정 애니메이션</span>
+            </div>
+
+            <!-- Non-Blocking Progress Ribbon (Never blacks out the canvas!) -->
+            <div id="visualShimmer" class="shimmer-overlay">
+              <div class="spinner-ring"></div>
+              <div style="display:flex; flex-direction:column; gap:2px;">
+                <div style="font-weight:800; font-size:14px; color:var(--text-primary);" id="shimmerStageTitle">
+                  ⚡ 초고속 병렬 생성 중...
+                </div>
+                <div style="font-size:11.5px; color:var(--text-secondary);" id="shimmerStageSub">
+                  스토리 감독 + 나노 바나나 16:9 + Veo 3단계(투입➔잠김➔거품) + 캐릭터 보이스 동시 합성 중
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Veo 3-Stage Process Stepper Bar (Clicking switches straight to the Veo 3-stage process animation) -->
+          <div id="veoProcessStepper" class="veo-process-stepper" onclick="setMediaView('motion')" title="클릭하면 투입 ➔ 잠김 ➔ 거품/반응 3단계 과정 애니메이션을 재생합니다">
+            <div class="veo-stage-pill active" id="veoStep1">
+              <span>1️⃣ 단계</span>
+              <span id="veoStep1Text">아이템 투입·낙하 시작</span>
+            </div>
+            <div class="veo-stage-pill active" id="veoStep2">
+              <span>2️⃣ 단계</span>
+              <span id="veoStep2Text">액체 잠김·물보라 확산</span>
+            </div>
+            <div class="veo-stage-pill active" id="veoStep3">
+              <span>3️⃣ 단계</span>
+              <span id="veoStep3Text">격렬한 거품·기포 폭발 완성</span>
+            </div>
+          </div>
+
+          <!-- EXPLICIT MULTI-TURN CONTEXT CONTINUITY BRIDGE (#contextBridgeCard) -->
+          <div id="contextBridgeCard" class="context-bridge-card" data-stitch-component="context-continuity-bridge">
+            <div class="context-bridge-header">
+              <span class="context-bridge-title" id="contextBridgeTitle">
+                🔗 이전 페이지 맥락 연결 브릿지
+              </span>
+              <span class="chain-badge" id="chainBadge">🌱 1페이지 기준 장면</span>
+            </div>
+
+            <div id="contextBridgeBody" class="context-bridge-flow">
+              <!-- Populated dynamically in renderCurrentPage() -->
+            </div>
+
+            <div id="contextContinuityReason" class="bridge-continuity-reason"></div>
+          </div>
+
+          <!-- Cumulative Scene State & Lab Metrics Strip -->
+          <div class="cumulative-strip" data-stitch-component="cumulative-state-strip">
+            <div class="strip-top-row">
+              <div class="accumulated-items-row">
+                <span class="accumulated-label" id="lblAccumulatedItems">📦 누적 아이템 및 상태 체인:</span>
+                <div id="cumulativeItemsStrip" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
+              </div>
+              <div class="lab-metrics-group" id="labMetricsGroup">
+                <span class="metric-pill" id="phBadge">🧪 산성도 pH 1.0</span>
+                <span class="metric-pill temp-pill" id="tempBadge">🌡️ 온도 22.0 °C</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Collapsible Prompt Inspector -->
+          <details class="prompt-inspector">
+            <summary id="lblPromptInspector">🔍 나노 바나나 연속성 프롬프트 및 모션 설계 상세 보기</summary>
+            <div id="continuityNote" class="prompt-inspector-body"></div>
+          </details>
+        </section>
+
+        <!-- RIGHT PAGE: STORY NARRATIVE, CHARACTER VOICE & SCIENCE/STORY NOTE -->
+        <section class="book-page book-page-right" data-stitch-component="narrative-page">
+          <!-- Spoken Question Stamp -->
+          <div id="userQuestionBadge" class="question-stamp">
+            🗣️ 질문 준비 중...
+          </div>
+
+          <!-- Page Title & Story Paragraphs -->
+          <h1 id="pageTitle" class="narrative-title">원더북 라이브를 불러오는 중...</h1>
+          <div id="storyParagraphs" class="story-paragraphs"></div>
+
+          <!-- Character Voice Card -->
+          <div class="character-voice-card" data-stitch-component="character-voice-card">
+            <div class="voice-header">
+              <div class="character-avatar" id="characterAvatar">🦉</div>
+              <div class="voice-dialogue-wrap">
+                <div class="character-name-row">
+                  <span class="character-name-badge" id="characterName">부엉이 노바 박사</span>
+                  <span class="persona-voice-pill" id="characterVoicePersonaBadge">🦉 부엉이 노바 박사 캐릭터 보이스</span>
+                </div>
+                <div class="character-dialogue-text" id="characterDialogue"></div>
+              </div>
+            </div>
+
+            <div class="voice-controls-row">
+              <audio id="voiceAudio" controls></audio>
+              <button id="btnSpeakTts" class="btn btn-character-voice" onclick="playCharacterVoice()">
+                🎭 캐릭터 보이스 재생
+              </button>
+              <label class="auto-speak-label">
+                <input type="checkbox" id="autoSpeakToggle" checked />
+                <span id="lblAutoSpeak">페이지 넘길 때 캐릭터 보이스 자동 재생</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Science Reaction Equation / Story Continuity Card -->
+          <div class="science-note-card" data-stitch-component="science-note-card">
+            <div class="science-note-header">
+              <span id="scienceNoteHeaderLabel">⚗️ 화학 반응식 · 누적 실험 원리 및 안전 가이드</span>
+              <span id="lblVerifiedContinuity">누적 맥락 검증 완료</span>
+            </div>
+            <div id="scienceNote" class="science-note-body"></div>
+          </div>
+
+          <!-- Page Flip Controls & Telemetry -->
+          <div class="page-flip-footer">
+            <div id="telemetryBox" class="telemetry-line"></div>
+            <div class="flip-buttons-group">
+              <button id="prevPageBtn" class="btn btn-secondary" onclick="stepPage(-1)">◀ 이전 페이지</button>
+              <span id="pageIndicator" class="page-indicator-pill">1 / 1 페이지</span>
+              <button id="nextPageBtn" class="btn btn-secondary" onclick="stepPage(1)">다음 페이지 ▶</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- ======================================================================
+         3. INTERACTIVE VOICE & "WHAT-IF" COMMAND DOCK
+         ====================================================================== -->
+    <section class="voice-dock" data-stitch-section="voice-dock">
+      <div class="voice-input-row">
+        <button id="micBtn" class="btn btn-mic" onclick="toggleSpeechRecognition()">
+          🎤 음성으로 질문하기
+        </button>
+        <button id="btnMic" class="btn btn-mic" style="display:none;" onclick="toggleSpeechRecognition()">
+          🎤 음성으로 질문하기
+        </button>
+
+        <!-- Hidden select preserved for legacy test compatibility, automatically synced with currentLang -->
+        <select id="langSelect" class="stitch-select" style="display:none;" aria-label="Speech Recognition Language">
+          <option value="ko-KR">ko-KR</option>
+          <option value="en-US">en-US</option>
+        </select>
+
+        <input
+          type="text"
+          id="utteranceInput"
+          class="utterance-input"
+          placeholder="질문을 입력하거나 마이크 버튼을 눌러 말해보세요..."
+          oninput="const qEl = document.getElementById('questionInput'); if (qEl) qEl.value = this.value;"
+          onkeydown="if(event.key === 'Enter'){ event.preventDefault(); submitTurn(); }"
+        />
+        <input type="hidden" id="questionInput" value="" />
+
+        <button id="askBtn" class="btn btn-ask" onclick="submitTurn()">
+          페이지 넘기기 ▶
+        </button>
+        <button id="btnAsk" class="btn btn-ask" style="display:none;" onclick="submitTurn()">
+          페이지 넘기기 ▶
+        </button>
+      </div>
+
+      <div class="curiosity-row">
+        <div class="curiosity-header">
+          <span id="lblCuriosityHeader">💡 원클릭 연쇄 실험 및 이야기 칩 (클릭하면 현재 책의 누적 상태를 유지한 채 다음 페이지가 이어집니다):</span>
+          <span id="lblContinuityActive" style="color:var(--accent-secondary);">🔗 멀티턴 누적 맥락 유지 활성화</span>
+        </div>
+        <div id="followupChips" class="chips"></div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         4. VISUAL CONTINUITY FILMSTRIP TIMELINE
+         ====================================================================== -->
+    <section class="continuity-filmstrip-section" data-stitch-section="continuity-filmstrip">
+      <div class="filmstrip-header">
+        <span id="lblFilmstripHeader">🎞️ 페이지 연속성 타임라인 (썸네일을 클릭하면 해당 페이지로 바로 이동합니다)</span>
+        <span id="filmstripCountBadge">총 1개 페이지 생성됨</span>
+      </div>
+      <div id="filmstripTimeline" class="filmstrip-track"></div>
+      <div id="filmstripTrack" style="display:none;"></div>
+    </section>
+  </div>
+
+  <!-- ========================================================================
+       5. PUBLISHED BOOK & SHARE MODAL
+       ======================================================================== -->
+  <div id="publishModal" class="modal-backdrop" data-stitch-section="publish-modal" onclick="if(event.target === this) closePublishModal()">
+    <div class="publish-modal-card">
+      <div class="modal-title-row">
+        <h2 class="modal-title" id="lblModalTitle">🎉 나만의 원더북 완본 저장 및 공유 준비 완료!</h2>
+        <button id="btnCloseModal" class="btn btn-secondary" onclick="closePublishModal()">✕ 닫기</button>
+      </div>
+      <p id="lblModalDesc" style="margin:0; font-size:14px; color:#cbd5e1; line-height:1.5;">
+        지금까지 질문하고 실험한 모든 페이지와 16:9 나노 바나나 고화질 일러스트·리빙 모션·캐릭터 보이스가 하나의 완본 인터랙티브 북으로 저장되었습니다. 아래 링크로 언제든 다시 보거나 공유하세요!
+      </p>
+
+      <div>
+        <div id="lblShareUrlHeader" style="font-size:12px; font-weight:700; color:#94a3b8; margin-bottom:6px;">공유 가능한 인터랙티브 북 링크</div>
+        <div class="share-url-row">
+          <input type="text" id="modalShareUrlInput" class="share-url-input" readonly />
+          <button id="copyShareBtn" class="btn btn-new-book" onclick="copyShareLink()">📋 링크 복사하기</button>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a id="modalOpenBookLink" href="#" target="_blank" class="btn btn-publish" style="text-decoration:none; flex:1;">
+          📖 완본 플립북 뷰어 열기
+        </a>
+        <a id="modalDownloadHtmlLink" href="#" class="btn btn-secondary" style="text-decoration:none; flex:1;">
+          ⬇️ 단독 실행 HTML 파일 다운로드
+        </a>
+      </div>
+
+      <div id="modalStorageProof" class="proof-box"></div>
+    </div>
+  </div>
+
+  <script>
+    let currentBook = null;
+    let currentPageIndex = 0;
+    let currentMediaView = 'image'; // Default to 16:9 Nano Banana HD Illustration
+    let currentLang = 'ko';         // Strictly separated 'ko' (100% Korean) or 'en' (100% English)
+    let currentPresetId = 'science_hcl_lab';
+    let activeRequestToken = 0;
+    let recognition = null;
+    let isListening = false;
+    let systemStatus = null;
+
+    /* ==========================================================================
+       SCENARIO METADATA & STRICT KOREAN / ENGLISH I18N DICTIONARY
+       ========================================================================== */
+    const SCENARIO_PROFILES = {
+      science_hcl_lab: {
+        emblem: '🧪',
+        theme: 'science_lab',
+        ko: {
+          title: '🧪 노바 박사의 염산 실험실',
+          desc: '부엉이 노바 박사와 함께하는 산성 비커 연쇄 화학 반응 실험북',
+          modeBadge: '🧪 노바 박사의 염산 실험실',
+          charAvatar: '🦉',
+          charName: '부엉이 노바 박사',
+          personaBadge: '🦉 부엉이 노바 박사 캐릭터 보이스',
+          emptyState: '🧪 순수 1M 묽은 염산 비커 (아이템 투입 전 기본 장면)',
+          accumulatedLabel: '📦 비커 속 누적 투입 아이템 체인:',
+          noteHeader: '⚗️ 화학 반응식 · 누적 산성도 변화 및 안전 가이드',
+          curiosityHeader: '💡 염산 비커 원클릭 연쇄 실험 칩 (클릭하면 현재 비커 상태를 그대로 유지한 채 3단계 투입·거품 모션이 재생됩니다):',
+          placeholder: "염산 비커에 무엇을 넣어볼까요? 예: '과자(쿠키)를 넣으면?', '열쇠를 넣으면?', '베이킹소다를 넣으면?'..."
+        },
+        en: {
+          title: "🧪 Dr. Nova's HCl Acid Lab",
+          desc: 'Chained acid beaker chemical reaction lab with Dr. Nova the Owl Chemist',
+          modeBadge: "🧪 DR. NOVA'S HCl ACID LAB",
+          charAvatar: '🦉',
+          charName: 'Dr. Nova (Owl Chemist)',
+          personaBadge: '🦉 Dr. Nova Owl Character Voice',
+          emptyState: '🧪 Pure 1M HCl Acid Beaker (Base Scene Ready)',
+          accumulatedLabel: '📦 Accumulated Beaker Reaction Chain:',
+          noteHeader: '⚗️ Chemical Reaction Equation & Safety Insight',
+          curiosityHeader: '💡 1-Click Acid Beaker Experiment Chips (Chains directly onto the current beaker state with 3-stage drop & foam motion):',
+          placeholder: "What should we drop into the HCl beaker next? e.g., 'What if we drop a cookie in?', 'What if we add baking soda?'..."
+        }
+      },
+      fairy_tiger_rabbit: {
+        emblem: '🐯',
+        theme: 'storybook',
+        ko: {
+          title: '🐯 호랑이와 토끼의 달빛 고개 전래동화',
+          desc: '떡 하나 주면 안 잡아먹지! 꾀 많은 토끼와 어흥 호랑이의 달빛 솔숲 모험',
+          modeBadge: '🐯 호랑이와 토끼의 달빛 고개 전래동화',
+          charAvatar: '🐰',
+          charName: '꾀돌이 토끼 토토 & 어흥 호랑이',
+          personaBadge: '🐰 토끼 토토 & 🐯 호랑이 캐릭터 보이스',
+          emptyState: '🌕 달빛 솔숲 고개와 꿀떡 바구니 (1페이지 첫 장면)',
+          accumulatedLabel: '🧺 달빛 고개에 등장한 전래동화 아이템 체인:',
+          noteHeader: '✨ 전래동화 지혜 · 호랑이와 토끼의 누적 이야기 해설',
+          curiosityHeader: '💡 호랑이와 토끼 원클릭 동화 전개 칩 (클릭하면 호랑이와 토끼의 달빛 고개 이야기가 연속해서 이어집니다):',
+          placeholder: "호랑이와 토끼에게 어떤 일이 벌어질까요? 예: '토끼가 달콤한 별빛 꿀떡을 주면?', '모닥불에 구운 조약돌을 주면?'..."
+        },
+        en: {
+          title: '🐯 The Tiger & Clever Rabbit Moonlit Tale',
+          desc: 'Korean folk tale adventure with Toto the Clever Rabbit and the Mountain Tiger',
+          modeBadge: '🐯 TIGER & RABBIT FOLK STORYBOOK',
+          charAvatar: '🐰',
+          charName: 'Clever Rabbit Toto & Tiger',
+          personaBadge: '🐰 Clever Rabbit Toto Character Voice',
+          emptyState: '🌕 Moonlit Pine Mountain Pass (Page 1 Scene)',
+          accumulatedLabel: '🧺 Folk Tale Items Shared on the Mountain Pass:',
+          noteHeader: '✨ Folk Tale Wisdom & Story Continuity Note',
+          curiosityHeader: '💡 1-Click Tiger & Rabbit Story Chips (Continues the folk tale while keeping every character and item in the scene):',
+          placeholder: "What happens next with the Tiger and Rabbit? e.g., 'What if the rabbit gives glowing honey rice cakes?', 'What if they roast a pebble?'..."
+        }
+      },
+      science_space_shuttle: {
+        emblem: '🛸',
+        theme: 'science_lab',
+        ko: {
+          title: '🛸 우주왕복선 오비터 무중력 실험책',
+          desc: '우주왕복선 조종석·실험 데크에서 직접 해보는 무중력 물리·화학 실험북',
+          modeBadge: '🛸 우주왕복선 오비터 무중력 실험책',
+          charAvatar: '👨‍🚀',
+          charName: '한울 우주왕복선 사령관',
+          personaBadge: '👨‍🚀 한울 사령관 캐릭터 보이스',
+          emptyState: '🛸 우주왕복선 오비터 무중력 실험 데크 (1페이지 기본 장면)',
+          accumulatedLabel: '🛸 우주왕복선 선실 내 무중력 실험 체인:',
+          noteHeader: '🛸 우주왕복선 궤도 물리 법칙 · 무중력 실험 원리',
+          curiosityHeader: '💡 우주왕복선 원클릭 실험 칩 (클릭하면 우주왕복선 안에서 3단계 무중력 실험 과정 모션이 펼쳐집니다):',
+          placeholder: "우주왕복선 안에서 어떤 실험을 해볼까요? 예: '우주왕복선 안에서 물을 뿌리면?', '초코칩 쿠키를 띄우면?'..."
+        },
+        en: {
+          title: '🛸 Space Shuttle Orbiter Zero-G Lab Book',
+          desc: 'Hands-on microgravity physics and chemistry experiments inside the Space Shuttle Orbiter',
+          modeBadge: '🛸 SPACE SHUTTLE ORBITER LAB BOOK',
+          charAvatar: '👨‍🚀',
+          charName: 'Commander Hanul',
+          personaBadge: '👨‍🚀 Commander Hanul Character Voice',
+          emptyState: '🛸 Space Shuttle Orbiter Mid-Deck Lab (Page 1 Base Scene)',
+          accumulatedLabel: '🛸 Floating Space Shuttle Experiment Chain:',
+          noteHeader: '🛸 Orbital Microgravity Physics & Shuttle Science Note',
+          curiosityHeader: '💡 1-Click Space Shuttle Experiment Chips (Chains directly inside the Space Shuttle flight deck):',
+          placeholder: "What experiment should we run inside the Space Shuttle? e.g., 'What if we spray water?', 'What if we light a candle?'..."
+        }
+      },
+      fairy_starlight_fox: {
+        emblem: '🦊',
+        theme: 'storybook',
+        ko: {
+          title: '🦊 아기 여우 루미의 별빛 숲 동화',
+          desc: '아기 여우 루미와 속삭이는 나무 문 너머 펼쳐지는 마법 동화책',
+          modeBadge: '🦊 아기 여우 루미의 별빛 숲 동화',
+          charAvatar: '🦊',
+          charName: '아기 여우 루미',
+          personaBadge: '🦊 아기 여우 루미 캐릭터 보이스',
+          emptyState: '🚪 속삭이는 고목나무 마법 문 (1페이지 첫 장면)',
+          accumulatedLabel: '✨ 동화 속에 등장한 마법 친구들과 보물:',
+          noteHeader: '✨ 동화 세계관 · 캐릭터 교감 및 이야기 연속성 해설',
+          curiosityHeader: '💡 별빛 숲 원클릭 동화 전개 칩 (클릭하면 앞 페이지의 등장인물과 마법이 그대로 다음 페이지로 이어집니다):',
+          placeholder: "루미와 함께 어떤 동화를 이어갈까요? 예: '문을 열었더니 비눗방울을 부는 아기 용이 나타나면?', '별사탕 비가 내리면?'..."
+        },
+        en: {
+          title: "🦊 Lumi the Baby Fox's Starlight Forest Tale",
+          desc: 'Enchanted fairy-tale storybook with Lumi the Baby Fox and the Whispering Door',
+          modeBadge: "🦊 LUMI'S STARLIGHT FOREST STORYBOOK",
+          charAvatar: '🦊',
+          charName: 'Lumi the Baby Fox',
+          personaBadge: '🦊 Lumi Baby Fox Character Voice',
+          emptyState: '🚪 Whispering Ancient Oak Magic Door (Page 1 Scene)',
+          accumulatedLabel: '✨ Magical Friends & Wonders in the Story:',
+          noteHeader: '✨ Fairy-Tale Worldbuilding & Story Continuity Note',
+          curiosityHeader: '💡 1-Click Fairy-Tale Story Chips (Continues the story while keeping every magical character in the scene):',
+          placeholder: "What happens next in Lumi's fairy tale? e.g., 'What if a baby dragon blowing bubbles appears?', 'What if star-candy rain falls?'..."
+        }
+      },
+      science_space_kitchen: {
+        emblem: '🚀',
+        theme: 'science_lab',
+        ko: {
+          title: '🚀 오르빗 대장의 무중력 우주 실험실',
+          desc: '오르빗 우주선장과 우주정거장 큐폴라에서 실험하는 무중력 과학북',
+          modeBadge: '🚀 오르빗 대장의 무중력 우주 실험실',
+          charAvatar: '👩‍🚀',
+          charName: '오르빗 우주선장',
+          personaBadge: '👩‍🚀 오르빗 우주선장 캐릭터 보이스',
+          emptyState: '🛰️ 무중력 우주정거장 큐폴라 실험실 (1페이지 기본 장면)',
+          accumulatedLabel: '🛰️ 우주선 선실 내 무중력 부유 실험 체인:',
+          noteHeader: '🛰️ 무중력 물리 법칙 · 표면장력 및 우주 과학 원리',
+          curiosityHeader: '💡 무중력 우주 실험 원클릭 칩 (클릭하면 우주선 안에 떠 있는 물체들이 다음 페이지에서도 그대로 유지됩니다):',
+          placeholder: "무중력 우주정거장에서 무엇을 실험해 볼까요? 예: '무중력에서 물을 뿌리면?', '우주에서 양초에 불을 붙이면?'..."
+        },
+        en: {
+          title: "🚀 Captain Orbit's Zero-G Space Lab",
+          desc: 'Microgravity physics experiments aboard the orbital cupola with Captain Orbit',
+          modeBadge: "🚀 CAPTAIN ORBIT'S ZERO-G SPACE LAB",
+          charAvatar: '👩‍🚀',
+          charName: 'Captain Orbit',
+          personaBadge: '👩‍🚀 Captain Orbit Character Voice',
+          emptyState: '🛰️ Zero-G Space Station Cupola Cabin (Page 1 Base Scene)',
+          accumulatedLabel: '🛰️ Floating Zero-G Objects in Cabin:',
+          noteHeader: '🛰️ Microgravity Physics & Surface Tension Insight',
+          curiosityHeader: '💡 1-Click Zero-G Space Experiment Chips (Preserves all floating objects across turns):',
+          placeholder: "What should we test in zero gravity? e.g., 'What happens when we spray water in zero gravity?', 'What if we light a candle?'..."
+        }
+      }
+    };
+
+    const I18N = {
+      ko: {
+        pageDocTitle: '원더북 라이브 — 실시간 음성 인터랙티브 동화책 & 과학 실험실',
+        brandTitle: '원더북 라이브',
+        brandSubtitle: '실시간 음성 인터랙티브 동화책 & 안전 과학 실험실',
+        lblScenario: '시나리오 북',
+        btnNewBook: '+ 처음부터 새로 시작',
+        lblCustomCreatorTitle: '✨ 내가 원하는 주제로 새 책 시작:',
+        customInputPlaceholder: "예: '호랑이랑 토끼가 나오는 동화책 시작해줘', '우주왕복선 안에서 할 수 있는 실험책 만들어줘'...",
+        btnCreateCustomBook: '🚀 이 주제로 새 책 펼치기',
+        quickBtnTigerRabbit: '🐯 호랑이와 토끼 동화책',
+        quickBtnSpaceShuttle: '🛸 우주왕복선 실험책',
+        quickBtnHclLab: '🧪 염산 비커 화학 실험책',
+        cardActiveBadge: '현재 열람 중',
+        cardInactiveBadge: '이 책 펼치기',
+        lblSpeedTier: '추론 모드',
+        tierLow: '⚡ 고속 추론 모드 (빠른 응답)',
+        tierUltra: '🚀 초고속 실시간 모드 (즉시 응답)',
+        tierMedium: '🧠 심층 추론 모드 (정밀 분석)',
+        btnCinemaOff: '⛶ 와이드 시네마 뷰',
+        btnCinemaOn: '⛶ 기본 화면으로',
+        btnStageCinemaOff: '⛶ 시네마 확장',
+        btnStageCinemaOn: '⛶ 기본 크기',
+        pillStoryDefault: '스토리 감독 모델',
+        pillImage: '나노 바나나 고화질',
+        pillMotion: 'Veo 3단계 과정 모션',
+        btnPublish: '✨ 완본 저장 및 공유',
+        btnPublishing: '⏳ 완본 생성 중...',
+        tabImage: '🎨 나노 바나나 정지 일러스트',
+        tabMotion: '🎬 Veo 3단계 과정 모션 (투입➔잠김➔거품)',
+        visualLabelImage: '🎨 나노 바나나 16:9 고화질 일러스트',
+        visualLabelMotion: '🎬 Veo 3단계 실험·스토리 과정 애니메이션 (1. 투입·낙하 ➔ 2. 잠김·물보라 ➔ 3. 거품·기포 폭발)',
+        canvasSpec: '나노 바나나 16:9 · Veo 3단계 과정 모션',
+        veoStep1Default: '1단계: 아이템 투입·낙하',
+        veoStep2Default: '2단계: 액체 잠김·표면 물보라',
+        veoStep3Default: '3단계: 거품 왕관·기포 폭발',
+        shimmerInitPrefix: (bookTitle) => `'${bookTitle}' 1페이지 16:9 고화질 장면과 캐릭터 보이스를 불러오고 있습니다...`,
+        shimmerSub: '⚡ 병렬 파이프라인 가동 중: 스토리 + 16:9 일러스트 + Veo 3단계(투입➔잠김➔거품) 모션 + 캐릭터 보이스 동시 생성',
+        bridgeTitleSeed: (bookTitle) => `🌱 ${bookTitle} — 1페이지 기준 장면 (멀티턴 맥락 출발점)`,
+        bridgeTitleChain: (prev, curr) => `🔗 이전 페이지 맥락 연결 브릿지 (${prev}페이지 ➔ ${curr}페이지 연쇄 장면)`,
+        chainBadgeSeed: '🌱 1페이지 기준 장면',
+        chainBadgeChain: (prev, curr) => `🔗 ${prev}페이지 ➔ ${curr}페이지 맥락 연결 완료`,
+        bridgeSeedThumbLabel: '1페이지 기준 장면',
+        bridgeSeedThumbSub: '16:9 고화질 시드',
+        bridgeSeedWaitBadge: '➕ 다음 질문 대기 중 ➔',
+        bridgeSeedFormula: '아래 <span class="bridge-formula-highlight">원클릭 질문 칩</span>을 누르거나 질문하면, 이 1페이지 장면을 그대로 기억한 상태에서 <strong>2페이지 3단계 과정 모션(투입➔잠김➔거품)과 이야기</strong>가 즉시 이어집니다.',
+        bridgeSeedReason: (note) => `💡 연속성 기준: ${note || '동일한 카메라 구도와 조명·등장인물·배경 상태를 다음 페이지로 전달합니다.'}`,
+        bridgePrevThumbLabel: (p) => `◀ ${p}페이지 이전 장면`,
+        bridgePrevThumbSub: '클릭하여 이전 장면 보기',
+        bridgeCurrThumbLabel: (p) => `${p}페이지 현재 장면`,
+        bridgeCurrThumbSub: (cnt) => `누적 ${cnt}단계 반영`,
+        bridgeArrowTo: (p) => `➔ ${p}페이지`,
+        bridgeFormula: (prevItems, question, resultText) =>
+          `이전 상태 (<span class="bridge-formula-highlight">누적: ${prevItems}</span>) + 새로운 질문 (<span class="bridge-formula-highlight">'${question}'</span>) ➔ <strong>${resultText}</strong>`,
+        bridgeReasonPrefix: '🔗 맥락 유지 설명: ',
+        turnItemPrefix: (idx, icon, label) => `${idx}단계: ${icon} ${label}`,
+        phFormat: (ph) => `🧪 산성도 pH ${ph}`,
+        tempFormat: (t) => `🌡️ 용액 온도 ${t} °C`,
+        spaceGravityFormat: '🪐 중력 0.00 G (무중력 궤도)',
+        spaceTempFormat: (t) => `🌡️ 선내 기온 ${t} °C`,
+        lblPromptInspector: '🔍 나노 바나나 연속성 프롬프트 및 Veo 3단계 모션 설계 상세 보기',
+        inspectorAnchor: '연속성 기준 앵커:',
+        inspectorImage: '나노 바나나 프롬프트:',
+        inspectorMotion: 'Veo 3단계 과정 모션 프롬프트:',
+        questionPrefix: (q) => `🗣️ 질문: "${q}"`,
+        btnSpeakTts: '🎭 캐릭터 보이스 재생',
+        lblAutoSpeak: '페이지 넘길 때 캐릭터 보이스 자동 재생',
+        lblVerifiedContinuity: '누적 맥락 검증 완료',
+        btnPrevPage: '◀ 이전 페이지',
+        btnNextPage: '다음 페이지 ▶',
+        pageIndicator: (curr, total) => `${curr} / ${total} 페이지`,
+        folioIndicator: (curr, total) => `${String(curr).padStart(2, '0')}장 / ${String(total).padStart(2, '0')}장`,
+        telemetryFormat: (story, img, mot, ms) =>
+          `병렬 파이프라인 — 스토리: ${story} | 일러스트: ${img} | Veo 3단계 모션·보이스: ${mot} | 총 소요 시간: ${ms} ms`,
+        btnMicIdle: '🎤 음성으로 질문하기',
+        btnMicActive: '⏹ 음성 듣는 중... 질문을 말씀하세요!',
+        btnAskIdle: '페이지 넘기기 ▶',
+        btnAskLoading: '⚡ 병렬 생성 중...',
+        lblContinuityActive: '🔗 멀티턴 누적 맥락 + Veo 3단계 과정 모션 활성화',
+        lblFilmstripHeader: '🎞️ 현재 책의 페이지 연속성 타임라인 (썸네일을 클릭하면 해당 페이지로 바로 이동합니다)',
+        filmstripCount: (n) => `총 ${n}개 페이지 연속 생성됨`,
+        filmstripArrow: '➔ 누적 연결',
+        filmstripPageNum: (n) => `${n}페이지`,
+        lblModalTitle: '🎉 나만의 원더북 완본 저장 및 공유 준비 완료!',
+        btnCloseModal: '✕ 닫기',
+        lblModalDesc: '지금까지 질문하고 실험한 모든 페이지와 16:9 나노 바나나 고화질 일러스트·Veo 3단계 과정 모션·캐릭터 보이스가 하나의 완본 인터랙티브 북으로 저장되었습니다. 아래 링크로 언제든 다시 보거나 공유하세요!',
+        lblShareUrlHeader: '공유 가능한 인터랙티브 북 링크',
+        btnCopyShare: '📋 링크 복사하기',
+        btnCopiedShare: '✅ 복사 완료!',
+        btnOpenBook: '📖 완본 플립북 뷰어 열기',
+        btnDownloadHtml: '⬇️ 단독 실행 HTML 파일 다운로드',
+        publishBannerHtml: (count, shareUrl, exportUrl) =>
+          `<div><strong>✅ 완본 저장 완료! (총 ${count}페이지)</strong> — ` +
+          `<a href="${shareUrl}" target="_blank" style="color:#6ee7b7;margin-left:8px;font-weight:700;">공유용 플립북 열기 (${shareUrl})</a> | ` +
+          `<a href="${exportUrl}" style="color:#93c5fd;margin-left:8px;font-weight:700;">단독 HTML 북 다운로드</a></div>`,
+        speechUnsupportedAlert: '이 브라우저에서는 웹 음성 인식을 지원하지 않습니다. 아래 입력창이나 원클릭 질문 칩을 눌러주세요!'
+      },
+      en: {
+        pageDocTitle: 'WonderBook Live — Interactive Voice Storybook & Safe What-If Science Lab',
+        brandTitle: 'WonderBook Live',
+        brandSubtitle: 'Interactive Voice Storybook & Safe What-If Science Lab',
+        lblScenario: 'Scenario Book',
+        btnNewBook: '+ Restart Book',
+        lblCustomCreatorTitle: '✨ Start Any Custom Book Topic:',
+        customInputPlaceholder: "e.g., 'Start a fairy tale with a tiger and a rabbit', 'Make a Space Shuttle experiment book'...",
+        btnCreateCustomBook: '🚀 Start Custom Book',
+        quickBtnTigerRabbit: '🐯 Tiger & Rabbit Story',
+        quickBtnSpaceShuttle: '🛸 Space Shuttle Lab',
+        quickBtnHclLab: '🧪 HCl Acid Beaker Lab',
+        cardActiveBadge: 'Currently Open',
+        cardInactiveBadge: 'Open Book',
+        lblSpeedTier: 'Reasoning Tier',
+        tierLow: '⚡ Fast Reasoning Mode (Low Latency)',
+        tierUltra: '🚀 Ultra-Fast Live Mode (Instant)',
+        tierMedium: '🧠 Deep Reasoning Mode (Detailed)',
+        btnCinemaOff: '⛶ Wide Cinema View',
+        btnCinemaOn: '⛶ Standard View',
+        btnStageCinemaOff: '⛶ Expand Cinema',
+        btnStageCinemaOn: '⛶ Standard Size',
+        pillStoryDefault: 'Story Director',
+        pillImage: 'Nano Banana 16:9 HD',
+        pillMotion: 'Veo 3-Stage Process Motion',
+        btnPublish: '✨ Finish & Publish Book',
+        btnPublishing: '⏳ Publishing Book...',
+        tabImage: '🎨 Nano Banana Still Illustration',
+        tabMotion: '🎬 Veo 3-Stage Process Motion (Drop➔Splash➔Foam)',
+        visualLabelImage: '🎨 Nano Banana 16:9 High-Resolution Illustration',
+        visualLabelMotion: '🎬 Veo 3-Stage Process Animation (Stage 1: Drop ➔ Stage 2: Submerge/Splash ➔ Stage 3: Foam Eruption)',
+        canvasSpec: 'Nano Banana 16:9 HD · Veo 3-Stage Motion',
+        veoStep1Default: 'Stage 1: Item Drop & Entry',
+        veoStep2Default: 'Stage 2: Splash & Submersion',
+        veoStep3Default: 'Stage 3: Vigorous Foam & Bubbles',
+        shimmerInitPrefix: (bookTitle) => `Loading '${bookTitle}' Page 1 16:9 HD Scene & Character Voice...`,
+        shimmerSub: '⚡ Parallel Pipeline Active: Story + 16:9 Illustration + Veo 3-Stage Process Motion + Neural Voice simultaneously',
+        bridgeTitleSeed: (bookTitle) => `🌱 ${bookTitle} — Page 1 Seed Anchor Scene`,
+        bridgeTitleChain: (prev, curr) => `🔗 Multi-Turn Context Continuity Bridge (Page ${prev} ➔ Page ${curr})`,
+        chainBadgeSeed: '🌱 Page 1 Seed Anchor',
+        chainBadgeChain: (prev, curr) => `🔗 Page ${prev} ➔ Page ${curr} Chained`,
+        bridgeSeedThumbLabel: 'Page 1 Base Scene',
+        bridgeSeedThumbSub: '16:9 Seed Anchor',
+        bridgeSeedWaitBadge: '➕ Ready for Next Turn ➔',
+        bridgeSeedFormula: 'Click any <span class="bridge-formula-highlight">1-Click Chip</span> below or ask a question to generate <strong>Page 2 with 3-Stage Process Motion (Drop➔Splash➔Foam)</strong>.',
+        bridgeSeedReason: (note) => `💡 Continuity Anchor: ${note || 'Carries over the exact camera framing, lighting, character persona, and scene state to the next page.'}`,
+        bridgePrevThumbLabel: (p) => `◀ Page ${p} Previous Scene`,
+        bridgePrevThumbSub: 'Click to view previous page',
+        bridgeCurrThumbLabel: (p) => `Page ${p} Current Scene`,
+        bridgeCurrThumbSub: (cnt) => `${cnt} Cumulative Step(s)`,
+        bridgeArrowTo: (p) => `➔ Page ${p}`,
+        bridgeFormula: (prevItems, question, resultText) =>
+          `Previous State (<span class="bridge-formula-highlight">Accumulated: ${prevItems}</span>) + New Question (<span class="bridge-formula-highlight">'${question}'</span>) ➔ <strong>${resultText}</strong>`,
+        bridgeReasonPrefix: '🔗 Continuity Breakdown: ',
+        turnItemPrefix: (idx, icon, label) => `Turn ${idx}: ${icon} ${label}`,
+        phFormat: (ph) => `🧪 Acidity pH ${ph}`,
+        tempFormat: (t) => `🌡️ Solution ${t} °C`,
+        spaceGravityFormat: '🪐 Gravity 0.00 G (Microgravity)',
+        spaceTempFormat: (t) => `🌡️ Cabin ${t} °C`,
+        lblPromptInspector: '🔍 Inspect Nano Banana 16:9 Continuity & Veo 3-Stage Motion Prompts',
+        inspectorAnchor: 'Continuity Anchor:',
+        inspectorImage: 'Nano Banana 16:9 Prompt:',
+        inspectorMotion: 'Veo 3-Stage Motion Prompt:',
+        questionPrefix: (q) => `🗣️ Question: "${q}"`,
+        btnSpeakTts: '🎭 Play Character Voice',
+        lblAutoSpeak: 'Auto-Play Character Voice on Page Turn',
+        lblVerifiedContinuity: 'Verified Multi-Turn Continuity',
+        btnPrevPage: '◀ Previous Page',
+        btnNextPage: 'Next Page ▶',
+        pageIndicator: (curr, total) => `Page ${curr} of ${total}`,
+        folioIndicator: (curr, total) => `PAGE ${String(curr).padStart(2, '0')} / ${String(total).padStart(2, '0')}`,
+        telemetryFormat: (story, img, mot, ms) =>
+          `Parallel Telemetry — Story: ${story} | Image: ${img} | Veo 3-Stage Motion/Voice: ${mot} | Total Latency: ${ms} ms`,
+        btnMicIdle: '🎤 Speak Question',
+        btnMicActive: '⏹ Listening... Speak Your Question!',
+        btnAskIdle: 'Turn Page ▶',
+        btnAskLoading: '⚡ Parallel Generating...',
+        lblContinuityActive: '🔗 Multi-Turn Continuity + Veo 3-Stage Motion Active',
+        lblFilmstripHeader: '🎞️ Current Book Continuity Timeline (Click any thumbnail to jump)',
+        filmstripCount: (n) => `${n} ${n === 1 ? 'Page' : 'Pages'} in Continuity Chain`,
+        filmstripArrow: '➔ Chained',
+        filmstripPageNum: (n) => `Page ${n}`,
+        lblModalTitle: '🎉 WonderBook Published & Ready to Share!',
+        btnCloseModal: '✕ Close',
+        lblModalDesc: 'All your interactive pages, 16:9 Nano Banana illustrations, Veo 3-stage process animations, and character voices have been compiled into a standalone flipbook.',
+        lblShareUrlHeader: 'SHAREABLE FLIPBOOK URL',
+        btnCopyShare: '📋 Copy Share Link',
+        btnCopiedShare: '✅ Copied!',
+        btnOpenBook: '📖 Open Published Flipbook Viewer',
+        btnDownloadHtml: '⬇️ Download Standalone HTML Book',
+        publishBannerHtml: (count, shareUrl, exportUrl) =>
+          `<div><strong>✅ Book Published! (${count} Pages)</strong> — ` +
+          `<a href="${shareUrl}" target="_blank" style="color:#6ee7b7;margin-left:8px;font-weight:700;">Open Shareable Flipbook (${shareUrl})</a> | ` +
+          `<a href="${exportUrl}" style="color:#93c5fd;margin-left:8px;font-weight:700;">Download Standalone HTML Book</a></div>`,
+        speechUnsupportedAlert: 'Web Speech API is not supported in this browser. Please type your question or click one of the 1-Click chips below!'
+      }
+    };
+
+    const ITEM_DISPLAY_CATALOG = {
+      metal_key: { icon: '🔑', labelKo: '금속 열쇠', labelEn: 'Metal Key (Fe/Zn)', phDelta: 0.3, tempDelta: 8.5 },
+      apple: { icon: '🍎', labelKo: '빨간 사과 조각', labelEn: 'Red Apple Slice', phDelta: 0.15, tempDelta: 1.0 },
+      cookie_snack: { icon: '🍪', labelKo: '바삭한 과자(쿠키)', labelEn: 'Crunchy Cookie', phDelta: 0.45, tempDelta: 3.0 },
+      water_spray: { icon: '💧', labelKo: '물 분사 물방울', labelEn: 'Water Droplets', phDelta: 0.85, tempDelta: 4.5 },
+      baking_soda: { icon: '🌋', labelKo: '베이킹소다 거품', labelEn: 'Baking Soda Foam', phDelta: 1.2, tempDelta: -1.5 },
+      egg_shell: { icon: '🥚', labelKo: '달걀 껍데기', labelEn: 'Eggshell (CaCO₃)', phDelta: 0.65, tempDelta: 2.0 },
+      eggshell: { icon: '🥚', labelKo: '달걀 껍데기', labelEn: 'Eggshell (CaCO₃)', phDelta: 0.65, tempDelta: 2.0 },
+      gold_ring: { icon: '💍', labelKo: '순금 반지 (불변)', labelEn: '24K Gold Ring (Inert)', phDelta: 0.0, tempDelta: 0.0 },
+      rice_cake: { icon: '🍡', labelKo: '따끈한 별빛 꿀떡', labelEn: 'Warm Honey Rice Cake', phDelta: 0.0, tempDelta: 0.0 },
+      pebble_stone: { icon: '🪨', labelKo: '모닥불 구운 조약돌', labelEn: 'Glowing Roasted Pebble', phDelta: 0.0, tempDelta: 0.0 },
+      zero_g_candle: { icon: '🕯️', labelKo: '무중력 둥근 촛불', labelEn: 'Zero-G Spherical Flame', phDelta: 0.0, tempDelta: 12.0 },
+      dragon_bubbles: { icon: '🐉', labelKo: '비눗방울 아기 용', labelEn: 'Bubble-Blowing Baby Dragon', phDelta: 0.0, tempDelta: 0.0 },
+      rainbow_spaceship: { icon: '🛸', labelKo: '무지개 구름 비행선', labelEn: 'Rainbow Cloud Airship', phDelta: 0.0, tempDelta: 0.0 },
+      star_candy: { icon: '🍬', labelKo: '반짝이는 별사탕 비', labelEn: 'Sparkling Star-Candy Rain', phDelta: 0.0, tempDelta: 0.0 },
+      starlight_cookie: { icon: '🍪', labelKo: '별빛 쿠키', labelEn: 'Starlight Cookie', phDelta: 0.0, tempDelta: 0.0 },
+      magic_door: { icon: '🚪', labelKo: '속삭이는 나무 문', labelEn: 'Whispering Tree Door', phDelta: 0.0, tempDelta: 0.0 },
+      moonlit_pine_path: { icon: '🌕', labelKo: '달빛 솔숲 고개', labelEn: 'Moonlit Pine Pass', phDelta: 0.0, tempDelta: 0.0 },
+      space_shuttle_orbiter: { icon: '🛸', labelKo: '우주왕복선 오비터 데크', labelEn: 'Space Shuttle Flight Deck', phDelta: 0.0, tempDelta: 0.0 },
+      zero_g_cabin: { icon: '🛰️', labelKo: '우주정거장 큐폴라', labelEn: 'Orbital Cupola Cabin', phDelta: 0.0, tempDelta: 0.0 },
+      none: { icon: '✨', labelKo: '기본 장면', labelEn: 'Base Scene', phDelta: 0.0, tempDelta: 0.0 }
+    };
+
+    const PRESET_CURIOSITY_CHIPS = {
+      ko: {
+        science_hcl_lab: [
+          '🍪 과자를 넣으면 어떻게 되나요?',
+          '🔑 열쇠(금속)를 넣으면 어떻게 되나요?',
+          '🌋 베이킹소다를 한 스푼 넣으면 어떻게 되나요?',
+          '🍎 사과를 넣으면 어떻게 되나요?',
+          '💧 물을 뿌리면 어떻게 되나요?',
+          '🥚 달걀 껍데기를 넣으면 어떻게 되나요?',
+          '💍 순금 반지를 넣으면 어떻게 되나요?'
+        ],
+        fairy_tiger_rabbit: [
+          '🍡 호랑이에게 달콤한 별빛 꿀떡을 주면 어떻게 되나요?',
+          '🪨 모닥불에 구운 조약돌을 떡이라고 주면 호랑이가 어떻게 하나요?',
+          '🐉 숲속에서 비눗방울을 부는 아기 용이 나타나면 어떻게 되나요?',
+          '🍬 밤하늘에서 반짝이는 별사탕 비가 내리면 어떻게 되나요?'
+        ],
+        science_space_shuttle: [
+          '💧 우주왕복선 안에서 물을 뿌리면 물방울이 어떻게 움직이나요?',
+          '🕯️ 무중력 우주왕복선 안에서 양초에 불을 붙이면 불꽃 모양이 어때요?',
+          '🍪 우주왕복선 안에서 초코칩 쿠키를 공중에 띄우면 어떻게 되나요?',
+          '🌋 우주왕복선 실험 캡슐에서 발포 비타민(베이킹소다)을 물방울에 넣으면?'
+        ],
+        fairy_starlight_fox: [
+          '🐉 문을 열었더니 비눗방울을 부는 아기 용이 나타나면 어때요?',
+          '🛸 무지개 구름 비행선을 타고 별똥별을 구하러 가면 어떻게 돼요?',
+          '🍬 하늘에서 반짝이는 별사탕 비가 내리면 어떻게 되나요?',
+          '🍪 황금 열쇠구멍에 별빛 쿠키를 넣으면 어떻게 되나요?'
+        ],
+        science_space_kitchen: [
+          '💧 무중력 상태에서 물을 뿌리면 물방울이 어떻게 되나요?',
+          '🕯️ 우주정거장에서 양초에 불을 붙이면 불꽃 모양이 어때요?',
+          '🍪 우주 공간에서 과자를 먹으면 부스러기는 어떻게 되나요?',
+          '🍎 사과와 금속 열쇠를 동시에 띄우면 어떻게 움직이나요?'
+        ]
+      },
+      en: {
+        science_hcl_lab: [
+          '🍪 What happens if we drop a crunchy cookie in?',
+          '🔑 What happens if we drop a metal key into the acid?',
+          '🌋 What happens if we add a spoonful of baking soda?',
+          '🍎 What happens if we put a red apple slice in?',
+          '💧 What happens if we spray water into the beaker?',
+          '🥚 What happens if we drop an eggshell into the acid?',
+          '💍 What happens if we drop a pure 24K gold ring in?'
+        ],
+        fairy_tiger_rabbit: [
+          '🍡 What happens if the rabbit shares warm starlight honey rice cakes with the tiger?',
+          '🪨 What happens if the rabbit gives the tiger a glowing roasted pebble by the campfire?',
+          '🐉 What if a baby dragon blowing rainbow bubbles joins the tiger and rabbit?',
+          '🍬 What if sparkling star-candy rain falls over the moonlit mountain pass?'
+        ],
+        science_space_shuttle: [
+          '💧 What happens when we spray water inside the Space Shuttle flight deck?',
+          '🕯️ What shape does a candle flame take inside the zero-gravity Space Shuttle?',
+          '🍪 What happens if we float a chocolate-chip cookie inside the Space Shuttle cabin?',
+          '🌋 What happens if we add fizzing baking soda into a floating water sphere?'
+        ],
+        fairy_starlight_fox: [
+          '🐉 What if opening the door reveals a baby dragon blowing bubbles?',
+          '🛸 What if we ride a rainbow cloud airship to rescue a falling star?',
+          '🍬 What if sparkling star-candy rain falls from the night sky?',
+          '🍪 What if we place a glowing starlight cookie into the golden keyhole?'
+        ],
+        science_space_kitchen: [
+          '💧 What happens when we spray water in zero gravity?',
+          '🕯️ What shape does a candle flame take on a space station?',
+          '🍪 What happens to cookie crumbs when we eat in zero gravity?',
+          '🍎 How do an apple and a metal key float together in microgravity?'
+        ]
+      }
+    };
+
+    function t() {
+      return I18N[currentLang] || I18N.ko;
+    }
+
+    function getScenarioProfile(presetId) {
+      const id = presetId || currentPresetId || 'science_hcl_lab';
+      const base = SCENARIO_PROFILES[id] || SCENARIO_PROFILES.science_hcl_lab;
+      return {
+        id,
+        emblem: base.emblem,
+        theme: base.theme,
+        ...(base[currentLang] || base.ko)
+      };
+    }
+
+    function getItemLabel(key, fallbackLabel) {
+      const info = ITEM_DISPLAY_CATALOG[key];
+      if (!info) return fallbackLabel || String(key);
+      return currentLang === 'ko' ? info.labelKo : info.labelEn;
+    }
+
+    function inferPresetFromCustomPrompt(promptText) {
+      const lower = (promptText || '').toLowerCase();
+      if (lower.includes('호랑이') || lower.includes('토끼') || lower.includes('떡') || lower.includes('전래') || lower.includes('tiger') || lower.includes('rabbit')) {
+        return 'fairy_tiger_rabbit';
+      }
+      if (lower.includes('우주왕복선') || lower.includes('왕복선') || lower.includes('오비터') || lower.includes('shuttle') || lower.includes('orbiter')) {
+        return 'science_space_shuttle';
+      }
+      if (lower.includes('염산') || lower.includes('비커') || lower.includes('산성') || lower.includes('화학') || lower.includes('hcl') || lower.includes('acid') || lower.includes('beaker')) {
+        return 'science_hcl_lab';
+      }
+      if (lower.includes('여우') || lower.includes('루미') || lower.includes('숲') || lower.includes('동화') || lower.includes('fox') || lower.includes('fairy')) {
+        return 'fairy_starlight_fox';
+      }
+      if (lower.includes('우주') || lower.includes('무중력') || lower.includes('실험') || lower.includes('space') || lower.includes('zero-g') || lower.includes('gravity')) {
+        return 'science_space_shuttle';
+      }
+      return 'fairy_tiger_rabbit';
+    }
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'ko' ? 'en' : 'ko';
+      document.documentElement.lang = currentLang;
+
+      const langSelectEl = document.getElementById('langSelect');
+      if (langSelectEl) {
+        langSelectEl.value = currentLang === 'ko' ? 'ko-KR' : 'en-US';
+      }
+
+      document.getElementById('langOptKo').classList.toggle('active', currentLang === 'ko');
+      document.getElementById('langOptEn').classList.toggle('active', currentLang === 'en');
+
+      applyLanguageStaticUI();
+      createNewBook(currentPresetId);
+    }
+
+    function applyScenarioInstantUI(presetId) {
+      currentPresetId = presetId || 'science_hcl_lab';
+      const dict = t();
+      const profile = getScenarioProfile(currentPresetId);
+
+      // Update select dropdown & 5-book shelf active cards immediately
+      const selectEl = document.getElementById('presetSelect');
+      if (selectEl && selectEl.value !== currentPresetId) {
+        selectEl.value = currentPresetId;
+      }
+
+      const allPresetIds = [
+        'science_hcl_lab',
+        'fairy_tiger_rabbit',
+        'science_space_shuttle',
+        'fairy_starlight_fox',
+        'science_space_kitchen'
+      ];
+      allPresetIds.forEach(id => {
+        const cardEl = document.getElementById(`bookTab_${id}`);
+        if (cardEl) {
+          cardEl.classList.toggle('active', id === currentPresetId);
+        }
+      });
+
+      const badgeMap = {
+        science_hcl_lab: 'cardBadgeHcl',
+        fairy_tiger_rabbit: 'cardBadgeTiger',
+        science_space_shuttle: 'cardBadgeShuttle',
+        fairy_starlight_fox: 'cardBadgeFox',
+        science_space_kitchen: 'cardBadgeSpace'
+      };
+      Object.entries(badgeMap).forEach(([id, elId]) => {
+        const el = document.getElementById(elId);
+        if (el) {
+          el.textContent = currentPresetId === id ? dict.cardActiveBadge : dict.cardInactiveBadge;
+        }
+      });
+
+      // Update HTML theme & scenario attributes immediately
+      const htmlEl = document.documentElement;
+      htmlEl.setAttribute('data-theme', profile.theme);
+      htmlEl.setAttribute('data-scenario', currentPresetId);
+
+      // Update brand emblem, mode badge, character persona, headers, and input placeholder
+      document.getElementById('brandEmblem').textContent = profile.emblem;
+      document.getElementById('modeBadgePill').textContent =
+        (currentBook && currentBook.custom_prompt && currentBook.title) ? currentBook.title : profile.modeBadge;
+      document.getElementById('characterAvatar').textContent = profile.charAvatar;
+      document.getElementById('characterName').textContent =
+        (currentBook && currentBook.character_name) ? currentBook.character_name : profile.charName;
+      document.getElementById('characterVoicePersonaBadge').textContent = profile.personaBadge;
+      document.getElementById('lblAccumulatedItems').textContent = profile.accumulatedLabel;
+      document.getElementById('scienceNoteHeaderLabel').textContent = profile.noteHeader;
+      document.getElementById('lblCuriosityHeader').textContent = profile.curiosityHeader;
+      document.getElementById('utteranceInput').placeholder = profile.placeholder;
+
+      // Strictly hide lab metrics in storybook modes, show in science/space modes
+      const labMetrics = document.getElementById('labMetricsGroup');
+      if (currentPresetId === 'fairy_starlight_fox' || currentPresetId === 'fairy_tiger_rabbit') {
+        labMetrics.style.display = 'none';
+      } else {
+        labMetrics.style.display = 'inline-flex';
+      }
+
+      // Immediately render scenario-matched 1-Click chips so they never lag or mismatch
+      renderScenarioChips(currentPresetId, []);
+    }
+
+    function applyLanguageStaticUI() {
+      const dict = t();
+      const hclProf = getScenarioProfile('science_hcl_lab');
+      const tigerProf = getScenarioProfile('fairy_tiger_rabbit');
+      const shuttleProf = getScenarioProfile('science_space_shuttle');
+      const foxProf = getScenarioProfile('fairy_starlight_fox');
+      const spaceProf = getScenarioProfile('science_space_kitchen');
+
+      document.title = dict.pageDocTitle;
+      document.getElementById('brandTitleText').textContent = dict.brandTitle;
+      document.getElementById('brandSubtitleText').textContent = dict.brandSubtitle;
+      document.getElementById('lblScenario').textContent = dict.lblScenario;
+      document.getElementById('optPresetHcl').textContent = hclProf.title;
+      if (document.getElementById('optPresetTiger')) {
+        document.getElementById('optPresetTiger').textContent = tigerProf.title;
+      }
+      if (document.getElementById('optPresetShuttle')) {
+        document.getElementById('optPresetShuttle').textContent = shuttleProf.title;
+      }
+      document.getElementById('optPresetFox').textContent = foxProf.title;
+      document.getElementById('optPresetSpace').textContent = spaceProf.title;
+      document.getElementById('newBookBtn').textContent = dict.btnNewBook;
+      document.getElementById('btnNewBook').textContent = dict.btnNewBook;
+
+      // Custom book creator bar localization
+      if (document.getElementById('lblCustomCreatorTitle')) {
+        document.getElementById('lblCustomCreatorTitle').textContent = dict.lblCustomCreatorTitle;
+      }
+      if (document.getElementById('customBookPromptInput')) {
+        document.getElementById('customBookPromptInput').placeholder = dict.customInputPlaceholder;
+      }
+      if (document.getElementById('btnCreateCustomBook')) {
+        document.getElementById('btnCreateCustomBook').textContent = dict.btnCreateCustomBook;
+      }
+      if (document.getElementById('quickBtnTigerRabbit')) {
+        document.getElementById('quickBtnTigerRabbit').textContent = dict.quickBtnTigerRabbit;
+      }
+      if (document.getElementById('quickBtnSpaceShuttle')) {
+        document.getElementById('quickBtnSpaceShuttle').textContent = dict.quickBtnSpaceShuttle;
+      }
+      if (document.getElementById('quickBtnHclLab')) {
+        document.getElementById('quickBtnHclLab').textContent = dict.quickBtnHclLab;
+      }
+
+      document.getElementById('cardTitleHcl').textContent = hclProf.title;
+      document.getElementById('cardDescHcl').textContent = hclProf.desc;
+      if (document.getElementById('cardTitleTiger')) {
+        document.getElementById('cardTitleTiger').textContent = tigerProf.title;
+      }
+      if (document.getElementById('cardDescTiger')) {
+        document.getElementById('cardDescTiger').textContent = tigerProf.desc;
+      }
+      if (document.getElementById('cardTitleShuttle')) {
+        document.getElementById('cardTitleShuttle').textContent = shuttleProf.title;
+      }
+      if (document.getElementById('cardDescShuttle')) {
+        document.getElementById('cardDescShuttle').textContent = shuttleProf.desc;
+      }
+      document.getElementById('cardTitleFox').textContent = foxProf.title;
+      document.getElementById('cardDescFox').textContent = foxProf.desc;
+      document.getElementById('cardTitleSpace').textContent = spaceProf.title;
+      document.getElementById('cardDescSpace').textContent = spaceProf.desc;
+
+      document.getElementById('lblSpeedTier').textContent = dict.lblSpeedTier;
+      document.getElementById('optTierLow').textContent = dict.tierLow;
+      document.getElementById('optTierUltra').textContent = dict.tierUltra;
+      document.getElementById('optTierMedium').textContent = dict.tierMedium;
+
+      const isCinema = document.body.classList.contains('cinema-mode');
+      document.getElementById('btnCinemaMode').textContent = isCinema ? dict.btnCinemaOn : dict.btnCinemaOff;
+      document.getElementById('btnCinemaModeStage').textContent = isCinema ? dict.btnStageCinemaOn : dict.btnStageCinemaOff;
+
+      document.getElementById('pillImageModel').textContent = dict.pillImage;
+      document.getElementById('pillMotionModel').textContent = dict.pillMotion;
+      document.getElementById('publishBtn').textContent = dict.btnPublish;
+      document.getElementById('btnFinishBook').textContent = dict.btnPublish;
+
+      document.getElementById('tabImage').textContent = dict.tabImage;
+      document.getElementById('tabMotion').textContent = dict.tabMotion;
+      document.getElementById('canvasSpecBadge').textContent = dict.canvasSpec;
+      document.getElementById('shimmerStageSub').textContent = dict.shimmerSub;
+      document.getElementById('lblPromptInspector').textContent = dict.lblPromptInspector;
+
+      if (document.getElementById('veoStep1Text')) {
+        document.getElementById('veoStep1Text').textContent = dict.veoStep1Default;
+      }
+      if (document.getElementById('veoStep2Text')) {
+        document.getElementById('veoStep2Text').textContent = dict.veoStep2Default;
+      }
+      if (document.getElementById('veoStep3Text')) {
+        document.getElementById('veoStep3Text').textContent = dict.veoStep3Default;
+      }
+
+      document.getElementById('btnSpeakTts').textContent = dict.btnSpeakTts;
+      document.getElementById('lblAutoSpeak').textContent = dict.lblAutoSpeak;
+      document.getElementById('lblVerifiedContinuity').textContent = dict.lblVerifiedContinuity;
+      document.getElementById('prevPageBtn').textContent = dict.btnPrevPage;
+      document.getElementById('nextPageBtn').textContent = dict.btnNextPage;
+
+      document.getElementById('micBtn').textContent = isListening ? dict.btnMicActive : dict.btnMicIdle;
+      document.getElementById('askBtn').textContent = dict.btnAskIdle;
+      document.getElementById('btnAsk').textContent = dict.btnAskIdle;
+      document.getElementById('lblContinuityActive').textContent = dict.lblContinuityActive;
+      document.getElementById('lblFilmstripHeader').textContent = dict.lblFilmstripHeader;
+
+      document.getElementById('lblModalTitle').textContent = dict.lblModalTitle;
+      document.getElementById('btnCloseModal').textContent = dict.btnCloseModal;
+      document.getElementById('lblModalDesc').textContent = dict.lblModalDesc;
+      document.getElementById('lblShareUrlHeader').textContent = dict.lblShareUrlHeader;
+      document.getElementById('copyShareBtn').textContent = dict.btnCopyShare;
+      document.getElementById('modalOpenBookLink').textContent = dict.btnOpenBook;
+      document.getElementById('modalDownloadHtmlLink').textContent = dict.btnDownloadHtml;
+
+      applyScenarioInstantUI(currentPresetId);
+    }
+
+    function toggleCinemaMode() {
+      const isCinema = document.body.classList.toggle('cinema-mode');
+      const dict = t();
+      const navBtn = document.getElementById('btnCinemaMode');
+      const stageBtn = document.getElementById('btnCinemaModeStage');
+      if (navBtn) {
+        navBtn.textContent = isCinema ? dict.btnCinemaOn : dict.btnCinemaOff;
+      }
+      if (stageBtn) {
+        stageBtn.textContent = isCinema ? dict.btnStageCinemaOn : dict.btnStageCinemaOff;
+      }
+    }
+
+    let pendingCreateBookPromise = null;
+
+    function buildInstantSeedBook(presetId, lang, customPromptText) {
+      const isKo = (lang || currentLang) === 'ko';
+      if (presetId === 'fairy_tiger_rabbit') {
+        return {
+          book_id: 'instant-seed-tiger-rabbit',
+          preset_id: 'fairy_tiger_rabbit',
+          mode: 'storybook',
+          lang: isKo ? 'ko' : 'en',
+          custom_prompt: customPromptText || '',
+          title: customPromptText
+            ? (isKo ? `🐯 ${customPromptText}` : `🐯 ${customPromptText}`)
+            : (isKo ? '🐯 호랑이와 토끼의 달빛 고개 동화책' : '🐯 The Tiger & Clever Rabbit Moonlit Storybook'),
+          character_name: isKo ? '꾀돌이 토끼 토토 & 어흥 호랑이' : 'Clever Rabbit Toto & Mountain Tiger',
+          pages: [
+            {
+              page_number: 1,
+              user_question: customPromptText || (isKo ? '호랑이랑 토끼가 나오는 동화책 시작해줘!' : 'Start a fairy tale with a tiger and a rabbit!'),
+              page_title: isKo ? '1페이지: 달빛 솔숲 고개에서 만난 호랑이와 토끼!' : 'Page 1: The Tiger and the Clever Rabbit on Moonlit Pass!',
+              story_paragraphs: isKo
+                ? [
+                    '보름달이 환하게 비추는 소나무 산고개에서, 바구니를 든 귀엽고 꾀 많은 하얀 토끼 토토가 커다란 줄무늬 호랑이와 마주쳤어요!',
+                    '호랑이는 배가 고파 코를 벌름거렸지만, 토토는 조금도 당황하지 않고 바구니 속에서 솔잎 향기가 솔솔 나는 보따리를 가리키며 방긋 웃었답니다.'
+                  ]
+                : [
+                    'On a moonlit pine mountain pass, Toto the clever white rabbit carrying a woven basket came face-to-face with a big striped Korean mountain tiger!',
+                    'The hungry tiger twitched his whiskers, but Toto smiled brightly and pointed into the warm basket.'
+                  ],
+              character_dialogue: isKo
+                ? '어흥! 호랑이 아저씨, 날 잡아먹지 마세요! 대신 이 바구니 속에 있는 달콤한 별빛 꿀떡이나 따끈한 조약돌 구이를 드려볼까요?'
+                : 'Roar! Wait, Mr. Tiger! Instead of chasing me, how about trying a glowing starlight honey rice cake or a warm roasted pebble from my basket?',
+              science_or_moral_note: isKo
+                ? '전래동화 지혜 노트: 위기 속에서도 침착하게 기지를 발휘하는 토끼와 익살스러운 호랑이의 대화가 매 페이지마다 누적되어 이어집니다!'
+                : 'Folk Tale Wisdom: Clever thinking and gentle humor turn a tense mountain encounter into a heartwarming friendship across every page!',
+              visual_continuity_note: isKo
+                ? '1페이지 기준 장면: 보름달과 초롱불이 켜진 한국 전통 솔숲 고개, 익살스럽고 친근한 줄무늬 호랑이와 대나무 바구니를 든 하얀 토끼 토토.'
+                : 'Page 1 Seed Anchor: Moonlit Korean pine forest path with warm lanterns, friendly striped tiger sitting across from clever white rabbit Toto.',
+              nano_banana_prompt: '16:9 widescreen children storybook watercolor illustration of a friendly striped Korean tiger sitting across from a clever cute white rabbit holding a woven basket on a moonlit pine mountain path.',
+              veo_motion_prompt: 'Warm lantern glow and fireflies drift across the moonlit pine forest as the tiger tilts his head curiously.',
+              image_url: '/static/assets/nano_banana/tiger_rabbit_base.png',
+              motion_url: '/static/assets/nano_banana/tiger_rabbit_base.png',
+              voice_url: '',
+              visual_state: {
+                theme: 'fairy_tiger_rabbit',
+                liquid_color: '#f59e0b',
+                bubble_intensity: 0.25,
+                smoke_intensity: 0.1,
+                item_key: 'moonlit_pine_path',
+                item_label: isKo ? '달빛 솔숲 고개' : 'Moonlit Pine Pass',
+                accumulated_items: ['moonlit_pine_path'],
+                accumulated_labels: [isKo ? '달빛 솔숲 고개' : 'Moonlit Pine Pass'],
+                glow_color: '#fbbf24',
+                reaction_badge: isKo ? '달빛 고개 전래동화' : 'MOONLIT FOLK TALE'
+              },
+              suggested_followups: PRESET_CURIOSITY_CHIPS[isKo ? 'ko' : 'en'].fairy_tiger_rabbit,
+              orchestration_metrics: {
+                story_engine: 'instant-seed',
+                image_engine: 'nano-banana-16x9-hd',
+                motion_engine: 'veo-3stage-process',
+                total_turn_ms: 0
+              }
+            }
+          ]
+        };
+      }
+
+      if (presetId === 'science_space_shuttle') {
+        return {
+          book_id: 'instant-seed-space-shuttle',
+          preset_id: 'science_space_shuttle',
+          mode: 'science_lab',
+          lang: isKo ? 'ko' : 'en',
+          custom_prompt: customPromptText || '',
+          title: customPromptText
+            ? (isKo ? `🛸 ${customPromptText}` : `🛸 ${customPromptText}`)
+            : (isKo ? '🛸 우주왕복선 오비터 무중력 실험책' : '🛸 Space Shuttle Orbiter Zero-G Lab Book'),
+          character_name: isKo ? '한울 우주왕복선 사령관' : 'Commander Hanul (Space Shuttle)',
+          pages: [
+            {
+              page_number: 1,
+              user_question: customPromptText || (isKo ? '우주왕복선 안에서 할 수 있는 실험책 만들어줘!' : 'Create a science experiment book inside a Space Shuttle!'),
+              page_title: isKo ? '1페이지: 우주왕복선 오비터 무중력 실험 데크 가동!' : 'Page 1: Inside the Space Shuttle Orbiter Zero-G Flight Deck!',
+              story_paragraphs: isKo
+                ? [
+                    '지구 상공 400km 궤도를 도는 우주왕복선 오비터(Space Shuttle Orbiter)의 넓은 조종석 겸 과학 실험 데크에 오신 것을 환영합니다!',
+                    '파노라마 창문 너머로 푸른 지구와 별빛이 빛나고, 한울 사령관 옆에는 무중력 실험 캡슐과 과학 장비들이 공중에 둥둥 떠 있어요.'
+                  ]
+                : [
+                    'Welcome aboard the flight deck and mid-deck science lab of the Space Shuttle Orbiter cruising 400 km above Earth!',
+                    'Through the wide cockpit windows, glowing blue Earth curves across starry space while Commander Hanul floats weightlessly beside zero-G experiment spheres.'
+                  ],
+              character_dialogue: isKo
+                ? '교신 양호! 여기는 우주왕복선 오비터 실험 데크다. 대원 친구, 무중력 우주왕복선 안에서 물 뿌리기, 양초 켜기, 쿠키 띄우기 중 어떤 실험부터 시작해 볼까?'
+                : 'Telemetry locked! This is Commander Hanul aboard the Space Shuttle Orbiter. What zero-gravity experiment shall we run first—spraying water, lighting a candle, or floating a cookie?',
+              science_or_moral_note: isKo
+                ? '우주왕복선 과학 원리: 궤도를 자유낙하하며 도는 우주왕복선 내부는 미세중력(0.0G) 상태여서 대류 현상과 침전이 사라지고 표면장력이 지배합니다.'
+                : 'Space Shuttle Science: In continuous orbital free-fall (0.0G microgravity), buoyancy convection disappears and liquid surface tension takes command.',
+              visual_continuity_note: isKo
+                ? '1페이지 기준 장면: 푸른 지구가 보이는 우주왕복선 오비터 조종석·실험 데크, 파란 우주복을 입은 한울 사령관과 공중에 떠 있는 실험 구체.'
+                : 'Page 1 Seed Anchor: Space Shuttle Orbiter flight deck overlooking blue Earth, Commander Hanul floating in a blue-and-white flight suit.',
+              nano_banana_prompt: '16:9 widescreen children science book illustration inside the Space Shuttle Orbiter flight deck overlooking blue Earth, with a friendly astronaut commander floating weightlessly.',
+              veo_motion_prompt: 'Zero-gravity scientific spheres hover gently inside the Space Shuttle cockpit while blue Earth glows outside.',
+              image_url: '/static/assets/nano_banana/space_shuttle_base.png',
+              motion_url: '/static/assets/nano_banana/space_shuttle_base.png',
+              voice_url: '',
+              visual_state: {
+                theme: 'science_space_shuttle',
+                liquid_color: '#38bdf8',
+                bubble_intensity: 0.3,
+                smoke_intensity: 0.05,
+                item_key: 'space_shuttle_orbiter',
+                item_label: isKo ? '우주왕복선 오비터 데크' : 'Space Shuttle Flight Deck',
+                accumulated_items: ['space_shuttle_orbiter'],
+                accumulated_labels: [isKo ? '우주왕복선 오비터 데크' : 'Space Shuttle Flight Deck'],
+                temperature_c: 21.0,
+                glow_color: '#60a5fa',
+                reaction_badge: isKo ? '우주왕복선 0.0G 궤도' : 'SHUTTLE ORBIT 0.0G'
+              },
+              suggested_followups: PRESET_CURIOSITY_CHIPS[isKo ? 'ko' : 'en'].science_space_shuttle,
+              orchestration_metrics: {
+                story_engine: 'instant-seed',
+                image_engine: 'nano-banana-16x9-hd',
+                motion_engine: 'veo-3stage-process',
+                total_turn_ms: 0
+              }
+            }
+          ]
+        };
+      }
+
+      if (presetId === 'fairy_starlight_fox') {
+        return {
+          book_id: 'instant-seed-fox',
+          preset_id: 'fairy_starlight_fox',
+          mode: 'storybook',
+          lang: isKo ? 'ko' : 'en',
+          title: isKo ? '🦊 아기 여우 루미와 속삭이는 나무 문' : '🦊 Lumi the Baby Fox & The Whispering Door',
+          character_name: isKo ? '아기 여우 루미' : 'Lumi the Baby Fox',
+          pages: [
+            {
+              page_number: 1,
+              user_question: isKo ? '동화책 첫 페이지를 펼쳐주세요!' : 'Open the first page of our fairy tale!',
+              page_title: isKo ? '1페이지: 속삭이는 나무 문과 여우 루미' : 'Page 1: Lumi at the Whispering Oak Door',
+              story_paragraphs: isKo
+                ? [
+                    '반딧불이가 반짝이는 보랏빛 별빛 숲 한가운데, 호기심 많은 아기 여우 루미가 거대한 고목나무 앞에 멈춰 섰어요.',
+                    '고목나무 줄기에는 달빛을 받아 황금빛으로 빛나는 신비한 나무 문과 열쇠구멍이 달려 있었답니다!'
+                  ]
+                : [
+                    'Deep inside the glowing violet Starlight Forest, curious little Lumi the Baby Fox stopped before an ancient giant oak tree.',
+                    'Carved into its trunk was a mysterious wooden door with a golden keyhole shimmering under the moonlight!'
+                  ],
+              character_dialogue: isKo
+                ? '우와! 나무 문고리가 달빛처럼 반짝여! 친구야, 이 마법의 문을 열면 그 너머에 누가 기다리고 있을까?'
+                : 'Ooh! The wooden doorknob is sparkling like moonlight! Friend, who do you think is waiting behind this magic door?',
+              science_or_moral_note: isKo
+                ? '동화 상상력 팁: 여러분이 상상하는 질문에 따라 루미의 모습과 숲속 배경이 그대로 유지되면서 새로운 마법 친구들이 하나씩 추가됩니다!'
+                : 'Storybook Continuity Tip: Every question you ask adds new magical friends to the forest while keeping Lumi and previous characters in the scene!',
+              visual_continuity_note: isKo
+                ? '1페이지 기준 장면: 파스텔 수채화풍 보랏빛 별빛 숲, 초록색 스카프를 두른 주황색 아기 여우 루미, 황금 열쇠구멍이 있는 고목나무 문.'
+                : 'Page 1 Seed Anchor: Pastel watercolor violet forest, orange baby fox Lumi wearing a green scarf, glowing ancient oak door.',
+              nano_banana_prompt: '16:9 widescreen children storybook watercolor illustration of Lumi the cute orange baby fox with a green scarf standing before a glowing magical door in an ancient oak tree.',
+              veo_motion_prompt: 'Fireflies drift gently around Lumi the baby fox as golden light pulses from the keyhole.',
+              image_url: '/static/assets/nano_banana/fox_base.png',
+              motion_url: '/static/assets/nano_banana/fox_base.png',
+              voice_url: '',
+              visual_state: {
+                theme: 'fairy_starlight_fox',
+                liquid_color: '#6d28d9',
+                bubble_intensity: 0.25,
+                smoke_intensity: 0.1,
+                item_key: 'magic_door',
+                item_label: isKo ? '속삭이는 나무 문' : 'Whispering Tree Door',
+                accumulated_items: ['magic_door'],
+                accumulated_labels: [isKo ? '속삭이는 나무 문' : 'Whispering Tree Door'],
+                glow_color: '#facc15',
+                reaction_badge: isKo ? '별빛 숲의 마법 문' : 'STARLIGHT MAGIC DOOR'
+              },
+              suggested_followups: PRESET_CURIOSITY_CHIPS[isKo ? 'ko' : 'en'].fairy_starlight_fox,
+              orchestration_metrics: {
+                story_engine: 'instant-seed',
+                image_engine: 'nano-banana-16x9-hd',
+                motion_engine: 'veo-voice',
+                total_turn_ms: 0
+              }
+            }
+          ]
+        };
+      }
+
+      if (presetId === 'science_space_kitchen') {
+        return {
+          book_id: 'instant-seed-space',
+          preset_id: 'science_space_kitchen',
+          mode: 'science_lab',
+          lang: isKo ? 'ko' : 'en',
+          title: isKo ? '🚀 오르빗 대장의 무중력 우주 실험실' : "🚀 Captain Orbit's Zero-G Space Lab",
+          character_name: isKo ? '오르빗 우주선장' : 'Captain Orbit',
+          pages: [
+            {
+              page_number: 1,
+              user_question: isKo ? '무중력 우주 실험실을 열어주세요!' : 'Open the Zero-G Space Lab!',
+              page_title: isKo ? '1페이지: 무중력 우주 실험실에 둥둥 떠 있는 물방울!' : 'Page 1: Floating inside the Zero-G Space Lab!',
+              story_paragraphs: isKo
+                ? [
+                    '지구가 푸르게 내려다보이는 둥근 우주정거장 전망 창문 앞, 오르빗 우주선장이 공중에 가볍게 둥둥 떠 있어요.',
+                    '중력이 거의 없는 우주 실험실에서는 물건이나 물방울을 놓으면 바닥으로 떨어지지 않고 우주선 한가운데에 둥글게 떠다닌답니다!'
+                  ]
+                : [
+                    'In front of the panoramic cupola window overlooking glowing blue Earth, Captain Orbit floats effortlessly in mid-air.',
+                    'Inside a microgravity space lab, objects and water droplets do not fall to the floor—they hover in the middle of the cabin!'
+                  ],
+              character_dialogue: isKo
+                ? '우주 실험실에 온 걸 환영해! 여기서는 중력이 거의 없어서 모든 게 둥둥 떠다닌단다. 무중력 상태에서 무엇을 실험해 볼까?'
+                : 'Welcome aboard the Space Lab! With almost zero gravity here, everything floats in mid-air. What shall we test in zero gravity first?',
+              science_or_moral_note: isKo
+                ? '과학 핵심 원리: 우주정거장의 미세중력(Microgravity) 상태에서는 물의 표면장력이 중력보다 크게 작용해 물방울이 완벽한 공 모양을 이룹니다.'
+                : 'Science Note: In orbital microgravity, surface tension dominates over gravity, pulling liquids into spherical droplets.',
+              visual_continuity_note: isKo
+                ? '1페이지 기준 장면: 둥근 우주정거장 전망 창문 너머 보이는 푸른 지구, 은색과 파란색 우주복을 입은 오르빗 대장, 부드러운 우주선 내부 조명.'
+                : 'Page 1 Seed Anchor: Panoramic space station cupola window showing blue Earth, Captain Orbit in a sleek blue-and-silver spacesuit.',
+              nano_banana_prompt: '16:9 widescreen children science book illustration of Captain Orbit floating inside a bright space station cupola with blue Earth glowing outside.',
+              veo_motion_prompt: 'Gentle zero-gravity floating motion of Captain Orbit as Earth rotates slowly outside the cupola window.',
+              image_url: '/static/assets/nano_banana/space_base.png',
+              motion_url: '/static/assets/nano_banana/space_base.png',
+              voice_url: '',
+              visual_state: {
+                theme: 'science_space_kitchen',
+                liquid_color: '#38bdf8',
+                bubble_intensity: 0.3,
+                smoke_intensity: 0.05,
+                item_key: 'zero_g_cabin',
+                item_label: isKo ? '우주정거장 큐폴라' : 'Orbital Cupola Cabin',
+                accumulated_items: ['zero_g_cabin'],
+                accumulated_labels: [isKo ? '우주정거장 큐폴라' : 'Orbital Cupola Cabin'],
+                temperature_c: 21.5,
+                glow_color: '#60a5fa',
+                reaction_badge: isKo ? '무중력 상태 0.0G' : 'MICROGRAVITY 0.0G'
+              },
+              suggested_followups: PRESET_CURIOSITY_CHIPS[isKo ? 'ko' : 'en'].science_space_kitchen,
+              orchestration_metrics: {
+                story_engine: 'instant-seed',
+                image_engine: 'nano-banana-16x9-hd',
+                motion_engine: 'veo-voice',
+                total_turn_ms: 0
+              }
+            }
+          ]
+        };
+      }
+
+      return {
+        book_id: 'instant-seed-hcl',
+        preset_id: 'science_hcl_lab',
+        mode: 'science_lab',
+        lang: isKo ? 'ko' : 'en',
+        title: isKo ? '🧪 노바 박사의 신기한 염산(HCl) 실험실' : "🧪 Dr. Nova's Interactive HCl Acid Lab",
+        character_name: isKo ? '부엉이 노바 박사' : 'Dr. Nova (Owl Chemist)',
+        pages: [
+          {
+            page_number: 1,
+            user_question: isKo ? '실험실 첫 페이지를 열어주세요!' : 'Open Page 1 of the HCl Lab!',
+            page_title: isKo ? '1페이지: 보글보글 투명한 염산 비커가 준비됐어요!' : 'Page 1: The Glowing HCl Acid Beaker is Ready!',
+            story_paragraphs: isKo
+              ? [
+                  '부엉이 노바 박사님의 반짝이는 안전 화학 실험실에 오신 것을 환영해요! 실험대 한가운데 놓인 튼튼한 유리 비커 속에는 투명한 묽은 염산(HCl) 용액이 에메랄드빛 조명을 받으며 담겨 있답니다.',
+                  '집에서는 절대 직접 만지면 안 되는 강한 산성 용액이지만, 이 마법 과학책 속에서는 무엇이든 안전하게 넣어보고 어떻게 변하는지 관찰할 수 있어요!'
+                ]
+              : [
+                  "Welcome to Dr. Nova's sparkling safe chemistry lab! Right in the center of the workbench stands a heavy borosilicate glass beaker filled with crystal-clear dilute hydrochloric acid (HCl).",
+                  'Hydrochloric acid is far too strong to touch at home, but inside our interactive science book we can safely drop anything inside and watch the exact chemical reaction unfold!'
+                ],
+            character_dialogue: isKo
+              ? '안녕, 꼬마 과학자 친구! 이 투명한 염산 비커에 과자(쿠키), 열쇠, 사과, 베이킹소다 중 무엇을 먼저 넣어볼까? 네가 말하는 대로 바로 실험해 줄게!'
+              : 'Hello, young scientist! What should we drop into our hydrochloric acid beaker first—a cookie, a metal key, an apple slice, or baking soda? Just say the word!',
+            science_or_moral_note: isKo
+              ? '과학 핵심 원리: 염산(HCl)은 물속에서 수소 이온(H⁺)과 염화 이온(Cl⁻)으로 나뉘는 강한 산성(pH 1.0) 물질이에요.'
+              : 'Science Note: Hydrochloric acid (HCl) dissociates completely in water into hydrogen ions (H⁺) and chloride ions (Cl⁻) at pH 1.0.',
+            visual_continuity_note: isKo
+              ? '1페이지 기준 장면: 따뜻한 원목 실험대 중앙의 500mL 투명 유리 비커, 초록빛으로 은은하게 빛나는 염산 용액, 보안경을 쓴 부엉이 노바 박사.'
+              : 'Page 1 Seed Anchor: Centered 500mL glass beaker on a warm oak lab bench, glowing emerald-tinted HCl liquid, and Dr. Nova the owl chemist wearing brass safety goggles.',
+            nano_banana_prompt: '16:9 widescreen children science book illustration of a centered glass beaker filled with glowing emerald-cyan hydrochloric acid on a warm wooden lab bench, with Dr. Nova the cute clockwork owl chemist.',
+            veo_motion_prompt: 'Subtle micro-bubbles rising gently in the clear emerald-tinted acid beaker while Dr. Nova blinks warmly.',
+            image_url: '/static/assets/nano_banana/hcl_base.png',
+            motion_url: '/static/assets/nano_banana/hcl_base.png',
+            voice_url: '',
+            visual_state: {
+              theme: 'science_hcl_lab',
+              liquid_color: '#10b981',
+              bubble_intensity: 0.15,
+              smoke_intensity: 0.05,
+              item_key: 'none',
+              item_label: isKo ? '순수 묽은 염산 (HCl)' : 'Pure 1M HCl Acid',
+              accumulated_items: [],
+              accumulated_labels: [],
+              ph_level: 1.0,
+              temperature_c: 22.0,
+              glow_color: '#34d399',
+              reaction_badge: 'pH 1.0 · HCl (aq)'
+            },
+            suggested_followups: PRESET_CURIOSITY_CHIPS[isKo ? 'ko' : 'en'].science_hcl_lab,
+            orchestration_metrics: {
+              story_engine: 'instant-seed',
+              image_engine: 'nano-banana-16x9-hd',
+              motion_engine: 'veo-voice',
+              total_turn_ms: 0
+            }
+          }
+        ]
+      };
+    }
+
+    async function fetchSystemStatus() {
+      try {
+        const res = await fetch('/api/system-status');
+        if (!res.ok) return;
+        systemStatus = await res.json();
+        if (systemStatus && systemStatus.models) {
+          document.getElementById('pillStoryModel').textContent =
+            systemStatus.models.primary_model || t().pillStoryDefault;
+        }
+      } catch (_) {}
+    }
+
+    async function createCustomBookWithPrompt(promptText) {
+      const cleanPrompt = (promptText || '').trim();
+      if (!cleanPrompt) return;
+      const customInput = document.getElementById('customBookPromptInput');
+      if (customInput) customInput.value = cleanPrompt;
+
+      const inferredPresetId = inferPresetFromCustomPrompt(cleanPrompt);
+      const fastMode = document.getElementById('fastModeSelect').value;
+      const reqToken = ++activeRequestToken;
+
+      const audioEl = document.getElementById('voiceAudio');
+      if (audioEl) {
+        try { audioEl.pause(); } catch (_) {}
+      }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      document.getElementById('publishBanner').style.display = 'none';
+
+      // 1. INSTANT 0ms SCREEN SWITCH: Immediately render custom book Page 1 without waiting!
+      currentPresetId = inferredPresetId;
+      currentMediaView = 'image';
+      document.getElementById('tabImage').classList.add('active');
+      document.getElementById('tabMotion').classList.remove('active');
+      currentBook = buildInstantSeedBook(inferredPresetId, currentLang, cleanPrompt);
+      currentPageIndex = 0;
+      applyScenarioInstantUI(inferredPresetId);
+      triggerSpreadFlipAnimation();
+      renderCurrentPage();
+
+      // 2. Sync custom book & neural character voice from backend in parallel
+      const fetchPromise = (async () => {
+        try {
+          const res = await fetch('/api/books', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              preset_id: inferredPresetId,
+              custom_prompt: cleanPrompt,
+              fast_mode: fastMode,
+              model_tier: fastMode,
+              lang: currentLang,
+              language: currentLang,
+              prefer_live_api: false
+            })
+          });
+          if (!res.ok) return;
+          const bookData = await res.json();
+          if (reqToken !== activeRequestToken) return;
+
+          currentBook = bookData;
+          currentPresetId = currentBook.preset_id || inferredPresetId;
+          currentPageIndex = (currentBook.pages || []).length - 1;
+          applyScenarioInstantUI(currentPresetId);
+          renderCurrentPage();
+
+          if (document.getElementById('autoSpeakToggle').checked) {
+            playCharacterVoice();
+          }
+        } catch (_) {}
+      })();
+
+      pendingCreateBookPromise = fetchPromise;
+      await fetchPromise;
+    }
+
+    function createCustomBookFromInput() {
+      const inputEl = document.getElementById('customBookPromptInput');
+      const text = (inputEl && inputEl.value || '').trim();
+      if (!text) {
+        if (inputEl) inputEl.focus();
+        return;
+      }
+      createCustomBookWithPrompt(text);
+    }
+
+    async function createNewBook(selectedPresetId) {
+      const presetId = selectedPresetId || document.getElementById('presetSelect').value || 'science_hcl_lab';
+      const fastMode = document.getElementById('fastModeSelect').value;
+      const reqToken = ++activeRequestToken;
+
+      // Stop any playing audio from previous book
+      const audioEl = document.getElementById('voiceAudio');
+      if (audioEl) {
+        try { audioEl.pause(); } catch (_) {}
+      }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+
+      document.getElementById('publishBanner').style.display = 'none';
+
+      // 1. INSTANT 0ms SCREEN SWITCH: Immediately update currentBook, 16:9 image, story, dialogue & bridge!
+      currentPresetId = presetId;
+      currentMediaView = 'image';
+      document.getElementById('tabImage').classList.add('active');
+      document.getElementById('tabMotion').classList.remove('active');
+      currentBook = buildInstantSeedBook(presetId, currentLang);
+      currentPageIndex = 0;
+      applyScenarioInstantUI(presetId);
+      triggerSpreadFlipAnimation();
+      renderCurrentPage();
+
+      // 2. Sync live book session & neural character voice from backend in background
+      const fetchPromise = (async () => {
+        try {
+          const res = await fetch('/api/books', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              preset_id: presetId,
+              fast_mode: fastMode,
+              model_tier: fastMode,
+              lang: currentLang,
+              language: currentLang,
+              prefer_live_api: false
+            })
+          });
+          if (!res.ok) return;
+          const bookData = await res.json();
+          if (reqToken !== activeRequestToken) return;
+
+          currentBook = bookData;
+          currentPresetId = currentBook.preset_id || presetId;
+          currentPageIndex = (currentBook.pages || []).length - 1;
+          applyScenarioInstantUI(currentPresetId);
+          renderCurrentPage();
+
+          if (document.getElementById('autoSpeakToggle').checked) {
+            playCharacterVoice();
+          }
+        } catch (_) {}
+      })();
+
+      pendingCreateBookPromise = fetchPromise;
+      await fetchPromise;
+    }
+
+    // Alias preserved for any existing callers
+    function startNewBook(selectedPresetId) {
+      return createNewBook(selectedPresetId);
+    }
+
+    function setLoadingState(isLoading, message) {
+      const dict = t();
+      const shimmer = document.getElementById('visualShimmer');
+      const titleEl = document.getElementById('shimmerStageTitle');
+      const askBtn = document.getElementById('askBtn');
+      const btnAskAlias = document.getElementById('btnAsk');
+      if (message && titleEl) titleEl.textContent = message;
+      if (isLoading) {
+        shimmer.classList.add('active');
+        if (askBtn) {
+          askBtn.disabled = true;
+          askBtn.textContent = dict.btnAskLoading;
+        }
+        if (btnAskAlias) btnAskAlias.disabled = true;
+      } else {
+        shimmer.classList.remove('active');
+        if (askBtn) {
+          askBtn.disabled = false;
+          askBtn.textContent = dict.btnAskIdle;
+        }
+        if (btnAskAlias) btnAskAlias.disabled = false;
+      }
+    }
+
+    function setMediaView(mode) {
+      currentMediaView = mode;
+      document.getElementById('tabImage').classList.toggle('active', mode === 'image');
+      document.getElementById('tabMotion').classList.toggle('active', mode === 'motion');
+      renderCurrentPage();
+    }
+
+    function stepPage(delta) {
+      if (!currentBook || !currentBook.pages) return;
+      const next = currentPageIndex + delta;
+      if (next >= 0 && next < currentBook.pages.length) {
+        currentPageIndex = next;
+        // Show 3-stage process motion automatically on Page 2+, still image on Page 1
+        currentMediaView = currentPageIndex > 0 ? 'motion' : 'image';
+        document.getElementById('tabImage').classList.toggle('active', currentMediaView === 'image');
+        document.getElementById('tabMotion').classList.toggle('active', currentMediaView === 'motion');
+        triggerSpreadFlipAnimation();
+        renderCurrentPage();
+        if (document.getElementById('autoSpeakToggle').checked) {
+          playCharacterVoice();
+        }
+      }
+    }
+
+    function jumpToPage(index) {
+      if (!currentBook || !currentBook.pages) return;
+      if (index >= 0 && index < currentBook.pages.length) {
+        currentPageIndex = index;
+        currentMediaView = currentPageIndex > 0 ? 'motion' : 'image';
+        document.getElementById('tabImage').classList.toggle('active', currentMediaView === 'image');
+        document.getElementById('tabMotion').classList.toggle('active', currentMediaView === 'motion');
+        triggerSpreadFlipAnimation();
+        renderCurrentPage();
+        if (document.getElementById('autoSpeakToggle').checked) {
+          playCharacterVoice();
+        }
+      }
+    }
+
+    function triggerSpreadFlipAnimation() {
+      const spread = document.getElementById('bookSpreadContainer');
+      spread.classList.remove('turning-page');
+      void spread.offsetWidth;
+      spread.classList.add('turning-page');
+    }
+
+    function computeCumulativeStateUpToPage(pageIdx) {
+      const pages = (currentBook && currentBook.pages) ? currentBook.pages.slice(0, pageIdx + 1) : [];
+      const latestPage = pages[pages.length - 1] || {};
+      const vState = latestPage.visual_state || {};
+
+      const items = [];
+      const seenKeys = new Set();
+      const rawPh = typeof vState.ph_level === 'number'
+        ? vState.ph_level
+        : (typeof vState.ph_estimate === 'number' ? vState.ph_estimate : null);
+      const rawTemp = typeof vState.temperature_c === 'number' ? vState.temperature_c : null;
+
+      const baseSceneKeys = new Set(['none', 'magic_door', 'zero_g_cabin', 'moonlit_pine_path', 'space_shuttle_orbiter']);
+
+      if (Array.isArray(vState.accumulated_items) && vState.accumulated_items.length > 0) {
+        const labelsArr = Array.isArray(vState.accumulated_labels) ? vState.accumulated_labels : [];
+        vState.accumulated_items.forEach((k, i) => {
+          if (!k || k === 'none') return;
+          if (baseSceneKeys.has(k) && vState.accumulated_items.length > 1 && i === 0) return;
+          const info = ITEM_DISPLAY_CATALOG[k] || { icon: '✨' };
+          items.push({
+            key: k,
+            icon: info.icon || '✨',
+            label: getItemLabel(k, labelsArr[i] || String(k))
+          });
+        });
+        return {
+          items,
+          ph: rawPh !== null ? rawPh : 1.3,
+          temp: rawTemp !== null ? rawTemp : 25.0
+        };
+      }
+
+      let ph = 1.0;
+      let temp = 22.0;
+      pages.forEach(p => {
+        const vs = p.visual_state || {};
+        const k = vs.item_key;
+        if (k && !baseSceneKeys.has(k) && !seenKeys.has(k)) {
+          seenKeys.add(k);
+          const info = ITEM_DISPLAY_CATALOG[k] || {
+            icon: (currentPresetId === 'fairy_starlight_fox' || currentPresetId === 'fairy_tiger_rabbit') ? '🌟' : '🧪',
+            phDelta: 0.2,
+            tempDelta: 2.0
+          };
+          items.push({
+            key: k,
+            icon: info.icon,
+            label: getItemLabel(k, vs.item_label || k)
+          });
+          ph = Math.min(6.8, ph + (info.phDelta || 0));
+          temp = Math.min(65.0, temp + (info.tempDelta || 0));
+        }
+      });
+      return {
+        items,
+        ph: rawPh !== null ? rawPh : ph,
+        temp: rawTemp !== null ? rawTemp : temp
+      };
+    }
+
+    function renderContextContinuityBridge(page, pageIdx, cumState) {
+      const dict = t();
+      const profile = getScenarioProfile(currentPresetId);
+      const bridgeCard = document.getElementById('contextBridgeCard');
+      const bridgeTitle = document.getElementById('contextBridgeTitle');
+      const bridgeBody = document.getElementById('contextBridgeBody');
+      const bridgeReason = document.getElementById('contextContinuityReason');
+      const chainBadge = document.getElementById('chainBadge');
+
+      if (!bridgeCard || !bridgeBody) return;
+
+      if (page.page_number <= 1 || pageIdx === 0) {
+        chainBadge.textContent = dict.chainBadgeSeed;
+        bridgeTitle.textContent = dict.bridgeTitleSeed(profile.title);
+        const currImg = page.image_data_url || page.image_url || '';
+        bridgeBody.innerHTML =
+          `<div class="bridge-thumb-box">` +
+            `<img class="bridge-thumb-img" src="${currImg}" alt="Page 1" />` +
+            `<div class="bridge-thumb-meta">` +
+              `<span class="bridge-thumb-label">${dict.bridgeSeedThumbLabel}</span>` +
+              `<span class="bridge-thumb-sub">${dict.bridgeSeedThumbSub}</span>` +
+            `</div>` +
+          `</div>` +
+          `<span class="bridge-arrow-badge">${dict.bridgeSeedWaitBadge}</span>` +
+          `<div class="bridge-formula-summary">${dict.bridgeSeedFormula}</div>`;
+        bridgeReason.textContent = dict.bridgeSeedReason(page.visual_continuity_note);
+        return;
+      }
+
+      const prevPage = currentBook.pages[pageIdx - 1] || {};
+      const prevCumState = computeCumulativeStateUpToPage(pageIdx - 1);
+      const prevImg = prevPage.image_data_url || prevPage.image_url || '';
+      const currImg = page.motion_data_url || page.motion_url || page.image_data_url || page.image_url || '';
+
+      chainBadge.textContent = dict.chainBadgeChain(page.page_number - 1, page.page_number);
+      bridgeTitle.textContent = dict.bridgeTitleChain(page.page_number - 1, page.page_number);
+
+      const prevItemsText = prevCumState.items.length > 0
+        ? prevCumState.items.map(it => `${it.icon} ${it.label}`).join(', ')
+        : profile.emptyState;
+
+      const latestItem = cumState.items[cumState.items.length - 1];
+      const resultText = latestItem
+        ? (currentLang === 'ko'
+            ? `${latestItem.icon} ${latestItem.label} 3단계 과정(투입➔잠김➔거품) 반영 (총 ${cumState.items.length}단계 누적)`
+            : `Added ${latestItem.icon} ${latestItem.label} with 3-Stage Process Motion (${cumState.items.length} cumulative steps)`)
+        : (currentLang === 'ko'
+            ? `${page.page_number}페이지 연쇄 장면 업데이트`
+            : `Page ${page.page_number} Chained Scene Updated`);
+
+      bridgeBody.innerHTML =
+        `<div class="bridge-thumb-box" id="contextPrevThumb" onclick="jumpToPage(${pageIdx - 1})">` +
+          `<img class="bridge-thumb-img" src="${prevImg}" alt="Page ${page.page_number - 1}" />` +
+          `<div class="bridge-thumb-meta">` +
+            `<span class="bridge-thumb-label">${dict.bridgePrevThumbLabel(page.page_number - 1)}</span>` +
+            `<span class="bridge-thumb-sub">${dict.bridgePrevThumbSub}</span>` +
+          `</div>` +
+        `</div>` +
+        `<span class="bridge-arrow-badge">${dict.bridgeArrowTo(page.page_number)}</span>` +
+        `<div class="bridge-thumb-box" style="cursor:default; border-color:var(--accent-primary);">` +
+          `<img class="bridge-thumb-img" src="${currImg}" alt="Page ${page.page_number}" />` +
+          `<div class="bridge-thumb-meta">` +
+            `<span class="bridge-thumb-label" style="color:var(--badge-text);">${dict.bridgeCurrThumbLabel(page.page_number)}</span>` +
+            `<span class="bridge-thumb-sub">${dict.bridgeCurrThumbSub(cumState.items.length)}</span>` +
+          `</div>` +
+        `</div>` +
+        `<div class="bridge-formula-summary" id="contextFormulaText">` +
+          dict.bridgeFormula(prevItemsText, page.user_question || '', resultText) +
+        `</div>`;
+
+      bridgeReason.textContent = dict.bridgeReasonPrefix + (page.visual_continuity_note || '');
+    }
+
+    function renderScenarioChips(presetId, modelFollowups) {
+      const chipsEl = document.getElementById('followupChips');
+      if (!chipsEl) return;
+      chipsEl.innerHTML = '';
+
+      const langChipCatalog = PRESET_CURIOSITY_CHIPS[currentLang] || PRESET_CURIOSITY_CHIPS.ko;
+      const presetChips = langChipCatalog[presetId] || langChipCatalog.science_hcl_lab;
+      const mergedChips = [];
+      const seenChipText = new Set();
+
+      const isKoreanText = (s) => /[가-힣]/.test(s || '');
+      presetChips.forEach(q => {
+        const clean = (q || '').trim();
+        if (clean && !seenChipText.has(clean)) {
+          seenChipText.add(clean);
+          mergedChips.push(clean);
+        }
+      });
+
+      (modelFollowups || []).forEach(q => {
+        const clean = (q || '').trim();
+        if (!clean || seenChipText.has(clean)) return;
+        if (currentLang === 'ko' && !isKoreanText(clean)) return;
+        if (currentLang === 'en' && isKoreanText(clean)) return;
+        seenChipText.add(clean);
+        mergedChips.push(clean);
+      });
+
+      const askedQuestions = new Set(
+        (currentBook && currentBook.preset_id === presetId && currentBook.pages
+          ? currentBook.pages
+          : []
+        ).map(p => (p.user_question || '').trim())
+      );
+
+      mergedChips.forEach(q => {
+        const btn = document.createElement('button');
+        const alreadyAsked = askedQuestions.has(q);
+        btn.className = 'chip' + (alreadyAsked ? ' tested-chip' : '');
+        const hasLeadingEmoji = /^[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(q);
+        const labelPrefix = hasLeadingEmoji ? '' : '✨ ';
+        btn.textContent = alreadyAsked ? `${labelPrefix}${q} ✓` : `${labelPrefix}${q}`;
+        btn.onclick = () => {
+          const uInput = document.getElementById('utteranceInput');
+          const qInput = document.getElementById('questionInput');
+          if (uInput) uInput.value = q;
+          if (qInput) qInput.value = q;
+          submitTurn();
+        };
+        chipsEl.appendChild(btn);
+      });
+    }
+
+    function updateVeoProcessStepper(page, cumState) {
+      const dict = t();
+      const step1TextEl = document.getElementById('veoStep1Text');
+      const step2TextEl = document.getElementById('veoStep2Text');
+      const step3TextEl = document.getElementById('veoStep3Text');
+      if (!step1TextEl || !step2TextEl || !step3TextEl) return;
+
+      const latestItem = cumState.items[cumState.items.length - 1];
+      if (page.page_number > 1 && latestItem) {
+        if (currentLang === 'ko') {
+          step1TextEl.textContent = `1단계: ${latestItem.icon} ${latestItem.label} 투입·낙하`;
+          step2TextEl.textContent = `2단계: 💦 액체 잠김·표면 물보라`;
+          step3TextEl.textContent = `3단계: 🫧 ${latestItem.label} 거품·반응 폭발`;
+        } else {
+          step1TextEl.textContent = `Stage 1: ${latestItem.icon} ${latestItem.label} Drop`;
+          step2TextEl.textContent = `Stage 2: 💦 Submersion & Splash`;
+          step3TextEl.textContent = `Stage 3: 🫧 Vigorous Foam & Reaction`;
+        }
+      } else {
+        step1TextEl.textContent = dict.veoStep1Default;
+        step2TextEl.textContent = dict.veoStep2Default;
+        step3TextEl.textContent = dict.veoStep3Default;
+      }
+    }
+
+    function renderCurrentPage() {
+      if (!currentBook || !currentBook.pages || !currentBook.pages.length) return;
+      const dict = t();
+      const presetId = currentBook.preset_id || currentPresetId || 'science_hcl_lab';
+      const profile = getScenarioProfile(presetId);
+      const page = currentBook.pages[currentPageIndex];
+      const totalPages = currentBook.pages.length;
+
+      // Ensure scenario UI matches currentBook.preset_id
+      applyScenarioInstantUI(presetId);
+
+      // Folio & Page Indicator
+      document.getElementById('leftFolioBadge').textContent = dict.folioIndicator(page.page_number, totalPages);
+      document.getElementById('pageIndicator').textContent = dict.pageIndicator(page.page_number, totalPages);
+      document.getElementById('prevPageBtn').disabled = currentPageIndex <= 0;
+      document.getElementById('nextPageBtn').disabled = currentPageIndex >= totalPages - 1;
+
+      // Spoken Question & Title
+      document.getElementById('userQuestionBadge').textContent = dict.questionPrefix(page.user_question || '');
+      document.getElementById('pageTitle').textContent = page.page_title || '';
+
+      // Story Paragraphs
+      const parasEl = document.getElementById('storyParagraphs');
+      parasEl.innerHTML = '';
+      (page.story_paragraphs || []).forEach(p => {
+        const el = document.createElement('p');
+        el.textContent = p;
+        parasEl.appendChild(el);
+      });
+
+      // Character Voice Card (strictly matched to active scenario profile or custom character name)
+      document.getElementById('characterName').textContent = currentBook.character_name || profile.charName;
+      document.getElementById('characterAvatar').textContent = profile.charAvatar;
+      document.getElementById('characterVoicePersonaBadge').textContent = profile.personaBadge;
+      document.getElementById('characterDialogue').textContent = `"${page.character_dialogue || ''}"`;
+
+      // Science / Continuity Note
+      document.getElementById('scienceNote').textContent = page.science_or_moral_note || '';
+
+      // 16:9 Visual Stage Media (#stageImage, #stageMotion, and #sceneImage)
+      const stageImgEl = document.getElementById('stageImage');
+      const stageMotEl = document.getElementById('stageMotion');
+      const sceneImgEl = document.getElementById('sceneImage');
+
+      const hiResSrc = page.image_data_url || page.image_url || '';
+      const motionSrc = page.motion_data_url || page.motion_url || hiResSrc;
+
+      if (stageImgEl) stageImgEl.src = hiResSrc;
+      if (stageMotEl) stageMotEl.src = motionSrc;
+
+      if (currentMediaView === 'motion' && motionSrc) {
+        if (stageImgEl) stageImgEl.style.display = 'none';
+        if (stageMotEl) stageMotEl.style.display = 'block';
+        if (sceneImgEl) sceneImgEl.src = motionSrc;
+        document.getElementById('visualModeLabel').textContent = dict.visualLabelMotion;
+      } else {
+        if (stageImgEl) stageImgEl.style.display = 'block';
+        if (stageMotEl) stageMotEl.style.display = 'none';
+        if (sceneImgEl) sceneImgEl.src = hiResSrc;
+        document.getElementById('visualModeLabel').textContent = dict.visualLabelImage;
+      }
+
+      const cumState = computeCumulativeStateUpToPage(currentPageIndex);
+      updateVeoProcessStepper(page, cumState);
+
+      if (cumState.items.length > 0) {
+        const latestItem = cumState.items[cumState.items.length - 1];
+        document.getElementById('activeItemOverlayBadge').textContent =
+          currentLang === 'ko'
+            ? `${profile.title} · 누적 ${cumState.items.length}단계: ${cumState.items.map(i => i.icon).join(' + ')} (${latestItem.label})`
+            : `${profile.title} · Step ${cumState.items.length}: ${cumState.items.map(i => i.icon).join(' + ')} (${latestItem.label})`;
+      } else {
+        document.getElementById('activeItemOverlayBadge').textContent =
+          currentLang === 'ko'
+            ? `${profile.title} · ${page.page_number}페이지 기준 장면`
+            : `${profile.title} · Page ${page.page_number} Base Scene`;
+      }
+
+      // Neural Character Persona Voice Audio Element
+      const audioEl = document.getElementById('voiceAudio');
+      const voiceSrc = page.voice_data_url || page.voice_url || '';
+      if (audioEl) {
+        audioEl.src = voiceSrc;
+      }
+
+      // Render Explicit Multi-Turn Context Continuity Bridge
+      renderContextContinuityBridge(page, currentPageIndex, cumState);
+
+      // Scenario-Specific Lab Metrics & Cumulative Items Strip
+      const phBadgeEl = document.getElementById('phBadge');
+      const tempBadgeEl = document.getElementById('tempBadge');
+      if (presetId === 'science_space_kitchen' || presetId === 'science_space_shuttle') {
+        phBadgeEl.textContent = dict.spaceGravityFormat;
+        tempBadgeEl.textContent = dict.spaceTempFormat(cumState.temp.toFixed(1));
+      } else if (presetId === 'science_hcl_lab') {
+        phBadgeEl.textContent = dict.phFormat(cumState.ph.toFixed(1));
+        tempBadgeEl.textContent = dict.tempFormat(cumState.temp.toFixed(1));
+      }
+
+      const stripEl = document.getElementById('cumulativeItemsStrip');
+      stripEl.innerHTML = '';
+      if (cumState.items.length === 0) {
+        const emptyBadge = document.createElement('span');
+        emptyBadge.className = 'item-badge';
+        emptyBadge.textContent = profile.emptyState;
+        stripEl.appendChild(emptyBadge);
+      } else {
+        cumState.items.forEach((item, idx) => {
+          const badge = document.createElement('span');
+          badge.className = 'item-badge';
+          badge.textContent = dict.turnItemPrefix(idx + 1, item.icon, item.label);
+          stripEl.appendChild(badge);
+        });
+      }
+
+      // Prompt Inspector
+      document.getElementById('continuityNote').innerHTML =
+        `<div><strong style="color:var(--accent-secondary);">${dict.inspectorAnchor}</strong> ${page.visual_continuity_note || ''}</div>` +
+        `<div><strong style="color:var(--accent-primary);">${dict.inspectorImage}</strong> ${page.nano_banana_prompt || ''}</div>` +
+        `<div><strong style="color:var(--accent-tertiary);">${dict.inspectorMotion}</strong> ${page.veo_motion_prompt || ''}</div>`;
+
+      // Telemetry Box & Header Pills
+      const metrics = page.orchestration_metrics || {};
+      const turnMs = metrics.total_turn_ms || 0;
+      document.getElementById('pillTurnLatency').textContent = `${turnMs} ms`;
+      if (metrics.story_engine && metrics.story_engine !== 'preset_seed') {
+        document.getElementById('pillStoryModel').textContent = metrics.story_engine;
+      }
+      document.getElementById('telemetryBox').textContent =
+        dict.telemetryFormat(
+          metrics.story_engine || 'seed',
+          metrics.image_engine || 'nano-banana',
+          metrics.motion_engine || 'veo-3stage',
+          turnMs
+        );
+
+      // Render Scenario-Matched 1-Click Follow-up Chips
+      renderScenarioChips(presetId, page.suggested_followups || []);
+
+      // Render Bottom Filmstrip Timeline
+      renderFilmstripTimeline();
+    }
+
+    function renderFilmstripTimeline() {
+      const dict = t();
+      const track = document.getElementById('filmstripTimeline');
+      const countBadge = document.getElementById('filmstripCountBadge');
+      if (!currentBook || !currentBook.pages) return;
+
+      const pages = currentBook.pages;
+      countBadge.textContent = dict.filmstripCount(pages.length);
+      track.innerHTML = '';
+
+      pages.forEach((p, idx) => {
+        if (idx > 0) {
+          const arrow = document.createElement('span');
+          arrow.className = 'filmstrip-arrow';
+          arrow.textContent = dict.filmstripArrow;
+          track.appendChild(arrow);
+        }
+
+        const card = document.createElement('div');
+        card.className = 'filmstrip-card' + (idx === currentPageIndex ? ' active' : '');
+        card.onclick = () => jumpToPage(idx);
+
+        const thumb = document.createElement('img');
+        thumb.className = 'filmstrip-thumb';
+        thumb.src = p.image_data_url || p.image_url || '';
+        thumb.alt = `Page ${p.page_number}`;
+
+        const meta = document.createElement('div');
+        meta.className = 'filmstrip-meta';
+
+        const pNum = document.createElement('div');
+        pNum.className = 'filmstrip-page-num';
+        pNum.textContent = dict.filmstripPageNum(p.page_number);
+
+        const pQuest = document.createElement('div');
+        pQuest.className = 'filmstrip-question';
+        pQuest.textContent = p.user_question || p.page_title || '';
+
+        meta.appendChild(pNum);
+        meta.appendChild(pQuest);
+        card.appendChild(thumb);
+        card.appendChild(meta);
+        track.appendChild(card);
+      });
+    }
+
+    async function submitTurn() {
+      if (!currentBook) return;
+      const inputEl = document.getElementById('utteranceInput');
+      const aliasEl = document.getElementById('questionInput');
+      const text = ((inputEl && inputEl.value) || (aliasEl && aliasEl.value) || '').trim();
+      if (!text) {
+        if (inputEl) inputEl.focus();
+        return;
+      }
+
+      // Check if the user typed a "start a new book about X" command right in the question box
+      const lower = text.toLowerCase();
+      if (
+        (lower.includes('시작해줘') || lower.includes('만들어줘') || lower.includes('동화책 시작') || lower.includes('실험책 만들어')) &&
+        (lower.includes('호랑이') || lower.includes('토끼') || lower.includes('우주왕복선') || lower.includes('동화책') || lower.includes('실험책'))
+      ) {
+        if (inputEl) inputEl.value = '';
+        if (aliasEl) aliasEl.value = '';
+        return createCustomBookWithPrompt(text);
+      }
+
+      const fastMode = document.getElementById('fastModeSelect').value;
+      const nextNum = (currentBook.pages || []).length + 1;
+      const reqToken = ++activeRequestToken;
+
+      setLoadingState(
+        true,
+        currentLang === 'ko'
+          ? `⚡ ${nextNum}페이지 병렬 생성 중 (1.투입 ➔ 2.잠김 ➔ 3.거품 폭발): "${text.slice(0, 32)}..."`
+          : `⚡ Parallel Generating Page ${nextNum} (Drop ➔ Splash ➔ Foam): "${text.slice(0, 32)}..."`
+      );
+
+      try {
+        if (!currentBook.book_id || String(currentBook.book_id).startsWith('instant-seed-')) {
+          if (pendingCreateBookPromise) {
+            try { await pendingCreateBookPromise; } catch (_) {}
+          }
+          if (!currentBook.book_id || String(currentBook.book_id).startsWith('instant-seed-')) {
+            const initRes = await fetch('/api/books', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                preset_id: currentPresetId,
+                custom_prompt: currentBook.custom_prompt || '',
+                fast_mode: fastMode,
+                model_tier: fastMode,
+                lang: currentLang,
+                language: currentLang,
+                prefer_live_api: false
+              })
+            });
+            if (initRes.ok) {
+              currentBook = await initRes.json();
+            }
+          }
+        }
+
+        const res = await fetch(`/api/books/${currentBook.book_id}/turn`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            user_utterance: text,
+            fast_mode: fastMode,
+            model_tier: fastMode,
+            lang: currentLang,
+            language: currentLang,
+            prefer_live_api: true
+          })
+        });
+        const data = await res.json();
+        if (reqToken !== activeRequestToken) return;
+
+        if (data.book) {
+          currentBook = data.book;
+          currentPageIndex = currentBook.pages.length - 1;
+          if (inputEl) inputEl.value = '';
+          if (aliasEl) aliasEl.value = '';
+
+          // Automatically activate Veo 3-Stage Process Motion on Page 2+ so the user immediately sees
+          // Stage 1 (Item Drop) -> Stage 2 (Splash & Submersion) -> Stage 3 (Vigorous Foam & Bubbles)!
+          currentMediaView = 'motion';
+          document.getElementById('tabImage').classList.remove('active');
+          document.getElementById('tabMotion').classList.add('active');
+
+          triggerSpreadFlipAnimation();
+          renderCurrentPage();
+
+          if (document.getElementById('autoSpeakToggle').checked) {
+            playCharacterVoice();
+          }
+        }
+      } finally {
+        if (reqToken === activeRequestToken) {
+          setLoadingState(false);
+        }
+      }
+    }
+
+    /* ==========================================================================
+       NEURAL CHARACTER PERSONA VOICE PLAYBACK (NO ROBOTIC SAPI5 BY DEFAULT)
+       ========================================================================== */
+    function playCharacterVoice() {
+      if (!currentBook || !currentBook.pages || !currentBook.pages.length) return;
+      const page = currentBook.pages[currentPageIndex] || {};
+      const audioEl = document.getElementById('voiceAudio');
+      const voiceSrc = page.voice_data_url || page.voice_url || '';
+
+      // Cancel any leftover browser speech synthesis
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+
+      if (audioEl && voiceSrc) {
+        if (audioEl.src !== voiceSrc && !audioEl.src.endsWith(voiceSrc)) {
+          audioEl.src = voiceSrc;
+        }
+        try {
+          audioEl.currentTime = 0;
+        } catch (_) {}
+        const playPromise = audioEl.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+          playPromise.catch(() => {
+            if (!page.voice_data_url && 'speechSynthesis' in window) {
+              const utter = new SpeechSynthesisUtterance(page.character_dialogue || '');
+              utter.lang = currentLang === 'ko' ? 'ko-KR' : 'en-US';
+              window.speechSynthesis.speak(utter);
+            }
+          });
+        }
+        return;
+      }
+
+      if (!voiceSrc && 'speechSynthesis' in window) {
+        const utter = new SpeechSynthesisUtterance(page.character_dialogue || '');
+        utter.lang = currentLang === 'ko' ? 'ko-KR' : 'en-US';
+        window.speechSynthesis.speak(utter);
+      }
+    }
+
+    // Alias preserved for backward compatibility
+    function speakWithBrowserTTS() {
+      playCharacterVoice();
+    }
+
+    async function finishAndPublishBook() {
+      if (!currentBook) return;
+      const dict = t();
+      const publishBtn = document.getElementById('publishBtn');
+      const btnFinishAlias = document.getElementById('btnFinishBook');
+      if (publishBtn) {
+        publishBtn.disabled = true;
+        publishBtn.textContent = dict.btnPublishing;
+      }
+      if (btnFinishAlias) btnFinishAlias.disabled = true;
+
+      try {
+        const res = await fetch(`/api/books/${currentBook.book_id}/finish`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ lang: currentLang })
+        });
+        const data = await res.json();
+        if (data.status === 'book_published') {
+          const fullShareUrl = window.location.origin + data.share_url;
+          const banner = document.getElementById('publishBanner');
+          banner.style.display = 'flex';
+          banner.innerHTML = dict.publishBannerHtml(
+            currentBook.pages.length,
+            data.share_url,
+            data.export_url
+          );
+
+          // Populate & Open Publish Modal
+          document.getElementById('modalShareUrlInput').value = fullShareUrl;
+          document.getElementById('modalOpenBookLink').href = data.share_url;
+          document.getElementById('modalDownloadHtmlLink').href = data.export_url;
+
+          const proof = data.storage_proof || {};
+          const gcsInfo = proof.gcs && proof.gcs.configured
+            ? `GCS (${proof.gcs.bucket})`
+            : (currentLang === 'ko' ? '로컬 런타임 아티팩트 검증 완료' : 'Local Runtime Artifact Verified');
+          document.getElementById('modalStorageProof').innerHTML =
+            `<div><strong>Book ID:</strong> ${proof.book_id || currentBook.book_id} · <strong>Pages:</strong> ${proof.page_count || currentBook.pages.length}</div>` +
+            `<div><strong>Manifest SHA-256:</strong> ${(proof.manifest_sha256 || '').slice(0, 32)}...</div>` +
+            `<div><strong>Export HTML SHA-256:</strong> ${(proof.export_html_sha256 || '').slice(0, 32)}...</div>` +
+            `<div><strong>Storage:</strong> ${gcsInfo}</div>`;
+
+          document.getElementById('publishModal').classList.add('open');
+        }
+      } finally {
+        if (publishBtn) {
+          publishBtn.disabled = false;
+          publishBtn.textContent = dict.btnPublish;
+        }
+        if (btnFinishAlias) btnFinishAlias.disabled = false;
+      }
+    }
+
+    function closePublishModal() {
+      document.getElementById('publishModal').classList.remove('open');
+    }
+
+    function copyShareLink() {
+      const dict = t();
+      const input = document.getElementById('modalShareUrlInput');
+      const btn = document.getElementById('copyShareBtn');
+      input.select();
+      navigator.clipboard.writeText(input.value).then(() => {
+        btn.textContent = dict.btnCopiedShare;
+        setTimeout(() => { btn.textContent = dict.btnCopyShare; }, 1800);
+      }).catch(() => {
+        document.execCommand('copy');
+        btn.textContent = dict.btnCopiedShare;
+        setTimeout(() => { btn.textContent = dict.btnCopyShare; }, 1800);
+      });
+    }
+
+    function toggleSpeechRecognition() {
+      const dict = t();
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRec) {
+        alert(dict.speechUnsupportedAlert);
+        return;
+      }
+      const micBtn = document.getElementById('micBtn');
+      if (isListening && recognition) {
+        recognition.stop();
+        return;
+      }
+      recognition = new SpeechRec();
+      recognition.lang = currentLang === 'ko' ? 'ko-KR' : 'en-US';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+      recognition.onstart = () => {
+        isListening = true;
+        micBtn.classList.add('mic-active');
+        micBtn.textContent = dict.btnMicActive;
+      };
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById('utteranceInput').value = transcript;
+        const qInput = document.getElementById('questionInput');
+        if (qInput) qInput.value = transcript;
+        submitTurn();
+      };
+      recognition.onend = () => {
+        isListening = false;
+        micBtn.classList.remove('mic-active');
+        micBtn.textContent = dict.btnMicIdle;
+      };
+      recognition.start();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      applyLanguageStaticUI();
+      fetchSystemStatus();
+      createNewBook('science_hcl_lab');
+    });
+  </script>
+</body>
+</html>
