@@ -1246,10 +1246,17 @@ def _render_veo_process_stage_frame(
         visual_state.get("item_key")
         or (accumulated_items[-1] if accumulated_items else "hcl_beaker")
     )
-    is_science_beaker = theme not in ("fairy_starlight_fox", "fairy_tiger_rabbit", "science_space_kitchen", "science_space_shuttle") and "fairy" not in theme and "space" not in theme
+    is_science_beaker = (
+        theme not in ("fairy_starlight_fox", "fairy_tiger_rabbit", "science_space_kitchen", "science_space_shuttle")
+        and "fairy" not in theme
+        and "story" not in theme
+        and "space" not in theme
+        and "tiger" not in theme
+        and "shuttle" not in theme
+    )
 
-    # Determine background blend between `before_canvas` (pre-item state) and `after_canvas` (reaction state)
-    if page_number <= 1:
+    # Only blend before->after for the 3-stage beaker drop-splash-foam in science_hcl_lab
+    if page_number <= 1 or not is_science_beaker:
         base_frame = after_canvas.copy()
     elif frame_idx <= 2:
         # Stage 1: Item is still in the air / entering -> show the pre-reaction scene!
@@ -1263,7 +1270,7 @@ def _render_veo_process_stage_frame(
     else:
         base_frame = after_canvas.copy()
 
-    # Apply base atmospheric continuity effects
+    # Apply base atmospheric continuity effects (fireflies, moon eclipse, zero-G orbs, shockwaves, or beaker bubbles)
     frame_rgba = _apply_painterly_continuity_effects(
         canvas=base_frame,
         visual_state=visual_state,
@@ -1273,13 +1280,13 @@ def _render_veo_process_stage_frame(
         num_frames=num_frames,
     )
 
-    if page_number <= 1:
+    if page_number <= 1 or not is_science_beaker:
         return frame_rgba.convert("RGB")
 
     ov = Image.new("RGBA", (GIF_WIDTH, GIF_HEIGHT), (0, 0, 0, 0))
     draw = ImageDraw.Draw(ov)
 
-    # Target coordinates on 640x360 (16:9) canvas
+    # Target coordinates on 640x360 (16:9) canvas for the HCl glass beaker
     if is_science_beaker:
         target_cx = 262
         meniscus_y = 182
