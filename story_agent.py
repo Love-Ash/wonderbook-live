@@ -609,10 +609,24 @@ def _compute_cumulative_state(
         base_ph = 1.0
         base_temp = 22.0
     else:
-        prev_items = list(prev_visual_state.get("accumulated_items") or [])
+        base_scene_keys = {
+            "none",
+            "",
+            "magic_door",
+            "tiger_rabbit_path",
+            "moonlit_pine_path",
+            "space_shuttle_orbiter",
+            "zero_g_cabin",
+            "space_shuttle_cabin",
+        }
+        prev_items = [
+            it
+            for it in list(prev_visual_state.get("accumulated_items") or [])
+            if it not in base_scene_keys
+        ]
         if new_topic in ("custom_story", "custom_science"):
             prev_items.append(new_topic)
-        elif new_topic not in ("none", "") and new_topic not in prev_items:
+        elif new_topic not in base_scene_keys and new_topic not in prev_items:
             prev_items.append(new_topic)
         cur_items = prev_items
         labels = [
